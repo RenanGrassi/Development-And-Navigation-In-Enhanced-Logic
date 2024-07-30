@@ -1,0 +1,115 @@
+(Start symbol)
+program = ("bomdia!" | "boatarde!"){statement}
+
+
+(statement)
+statement = declarationVariable | assignment | ifStatement | forStatement | whileStatement | switchStatement | printStatement |
+            inputStatement | callfunction | fileopen | fileclose | malloc | free
+
+
+(declarationVariable)
+declarationVariable = type identifier ";" ; 
+
+
+(assignment)
+assignment = identifier "=" expression ";" ;   ** tratar expression ** será tipada?
+
+
+(types)
+type = int | float | double | char | string | boolean | FILE
+int = "marioKart"
+float = "donkey" 
+double = "kong"
+char = "mario"
+string = "superMario"   ** superMario = char[char] ?
+boolean = "zelda"
+FILE = "nintendo"
+
+
+(ifstatement)
+ifStatement = "fezALista?" "("condition")" "{" {statement} "}"
+              ["naoFez?"] "("condition")" "{" {statement} "}"
+              ["nao?"]"{" {statement} "}"
+
+
+(whileStatement)
+whileStatement = "eAGreve?" "("condition")" "{" {statement} "}"
+
+
+(forStatement)
+forStatement = "adiaarOTP" "("assignment ";" condition ";" increment")" "{" {statement} "}"
+
+
+(switchStatement)
+switchStatement = "temosUmImpasse!" "("identifier")" "{" {case} {default} "}"
+case = "chwazi" number ":" {statement} ";" break ";"
+break = "momentoOportuno"
+default = "marcos" ":" {statement} ";"
+
+
+(printStatement)
+printStatement = print"("{printtext}")" ";"
+printStatement = println"("{printtext}"\n" ")" ";"
+printtext = """letter{letter}"""{identifier","}
+print = "veeeeja"
+println = "vejaBem!"
+
+
+(inputStatement)
+inputStatement = "diga!" "("{input}")" ";"
+input = identifier[","]
+
+(enum)
+enum = "eOVisto?" "{"enumerate"}"";"
+enumerate = (word | number)","
+
+(typedef)
+typedef = "penseBem" identifier identifier ";"
+
+
+(struct)
+struct = "8886" "{"{assignment}"}" ";"
+
+
+(createfunction)
+createfunction = "masNaoEObvio?" "{"statement"}" return ";"
+return = "chamada!" ";"
+
+
+(callfunction)
+callfunction = "masIssoEObvio!""("[identifier]")" ";"
+
+
+(fileopen)
+fileopen = FILE "=" "switch" "("identifier","openingmode")" ";"
+openingmode = "r" | "rb" | "w" | "wb" | "a" | "ab" | "r+" | "rb+" | "w+" | "wb+" | "a+" | "ab+"
+
+
+(fileclose)
+fileclose = "wii" "("FILE")" ";"
+
+
+(malloc)
+malloc = identifier "=" "naoEMagico?" "(""sizeof""("identifier")"")" ";"
+
+
+(free)
+free = "reuniao14h" "("identifier")" ";"
+
+
+(identifier)
+identifier = letter{letter}{digit}
+
+
+(usefullstatements)
+letter = (letterup | letterdown)
+letterup = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | U" |
+            "V" | "W" | "X" | "Y" | "Z"
+letterdown = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
+             "u" | "v" | "w" | "x" | "y" | "z"
+digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 
+condition = (identifier | digit) (logicoperator | relationaloperators) (identifier | digit)
+logicoperator = "|" | "&&" | "!"
+relationaloperators = "<" | ">" | "==" | ">=" | "<=" | "!="
+increment = identifier increase
+increase = "++" | "--"
