@@ -1,0 +1,61 @@
+bom dia!
+
+
+marioKart contador = 0
+donkey pi = 3.14
+kong grandeNumero = 2.718281828459045
+mario inicial = 'A'
+superMario saudacao = "Ola, Mundo!"
+zelda verdade = true
+
+masNaoEObvio? saudacaoFuncao() {
+    veeeeja saudacao
+}
+
+fezALista? (contador < 10) {
+    veeeeja "Contador é menor que 10"
+    eAGreve? (contador < 5) {
+        veeeeja "Contador é menor que 5"
+        momentoOportuno
+    } nao? {
+        veeeeja "Contador é 5 ou mais, mas ainda menor que 10"
+    }
+    muitoBem!
+    adiaarOTP (contador = 0; contador < 10; contador = contador + 1) {
+        fezALista? (contador == 7) {
+            veeeeja "Contador é igual a 7, vamos pular!"
+            vamosLa!
+        }
+        veeeeja "Contador: ", contador
+    }
+    temosUmImpasse!
+    chwazi 0:
+        veeeeja "Contador é zero"
+        momentoOportuno
+    chwazi 10:
+        veeeeja "Contador é dez"
+        momentoOportuno
+    marcos:
+        veeeeja "Contador é outro valor"
+}
+
+
+fezALista? (verdade) {
+    saudacaoFuncao()
+} nao? {
+    veeeeja "Isso não deveria acontecer!"
+}
+
+
+marioKart *ponteiro = naoEMagico? sizeof(marioKart)
+fezALista? (ponteiro != NULL) {
+    *ponteiro = 42
+    veeeeja "Valor alocado: ", *ponteiro
+    reuniao14h ponteiro
+} nao? {
+    veeeeja "Falha ao alocar memória"
+}
+
+
+chamada!
+
