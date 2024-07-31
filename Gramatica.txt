@@ -4,7 +4,7 @@ program = ("bomdia!" | "boatarde!"){statement}
 
 (statement)
 statement = declarationVariable | assignment | ifStatement | forStatement | whileStatement | switchStatement | printStatement |
-            inputStatement | callfunction | fileopen | fileclose | malloc | free
+            inputStatement | callfunction | fileopen | fileclose | malloc | free | kw_break
 
 
 (declarationVariable)
@@ -12,38 +12,26 @@ declarationVariable = type identifier ";" ;
 
 
 (assignment)
-assignment = identifier "=" expression ";" ;   ** tratar expression ** será tipada?
-
-
-(types)
-type = int | float | double | char | string | boolean | FILE
-int = "marioKart"
-float = "donkey" 
-double = "kong"
-char = "mario"
-string = "superMario"   ** superMario = char[char] ?
-boolean = "zelda"
-FILE = "nintendo"
+assignment = type identifier "=" expression ";" ;
 
 
 (ifstatement)
-ifStatement = "fezALista?" "("condition")" "{" {statement} "}"
-              ["naoFez?"] "("condition")" "{" {statement} "}"
-              ["nao?"]"{" {statement} "}"
+ifStatement = kw_if "("condition")" "{" {statement} "}"
+              [kw_elif "("condition")" "{" {statement} "}"]
+              [kw_else "{" {statement} "}"]
 
 
 (whileStatement)
-whileStatement = "eAGreve?" "("condition")" "{" {statement} "}"
+whileStatement = kw_while "("condition")" "{" {statement} "}"
 
 
 (forStatement)
-forStatement = "adiaarOTP" "("assignment ";" condition ";" increment")" "{" {statement} "}"
+forStatement = kw_for "("assignment ";" condition ";" increment")" "{" {statement} "}"
 
 
 (switchStatement)
-switchStatement = "temosUmImpasse!" "("identifier")" "{" {case} {default} "}"
-case = "chwazi" number ":" {statement} ";" break ";"
-break = "momentoOportuno"
+switchStatement = kw_switch "("identifier")" "{" {case} {default} "}"
+case = "chwazi" number ":" {statement} ";" kw_break ";"
 default = "marcos" ":" {statement} ";"
 
 
@@ -60,20 +48,19 @@ inputStatement = "diga!" "("{input}")" ";"
 input = identifier[","]
 
 (enum)
-enum = "eOVisto?" "{"enumerate"}"";"
-enumerate = (word | number)","
+enum = kw_enum "{" enum_field {"," enum_field} "}"";"
+enum_field = identifier
 
 (typedef)
-typedef = "penseBem" identifier identifier ";"
+typedef = kw_typedef identifier identifier ";"
 
 
 (struct)
-struct = "8886" "{"{assignment}"}" ";"
+struct = kw_struct "{"{assignment}"}" ";"
 
 
 (createfunction)
-createfunction = "masNaoEObvio?" "{"statement"}" return ";"
-return = "chamada!" ";"
+createfunction = "masNaoEObvio?" "{"statement"}" kw_return ";"
 
 
 (callfunction)
@@ -90,7 +77,7 @@ fileclose = "wii" "("FILE")" ";"
 
 
 (malloc)
-malloc = identifier "=" "naoEMagico?" "(""sizeof""("identifier")"")" ";"
+malloc = identifier "=" "naoEMagico?" "("kw_sizeof"("identifier")"")" ";"
 
 
 (free)
@@ -98,18 +85,58 @@ free = "reuniao14h" "("identifier")" ";"
 
 
 (identifier)
-identifier = letter{letter}{digit}
+identifier = ( letter | '_' ) { letter | digit | '_' }
 
 
-(usefullstatements)
+(literal tokens)
 letter = (letterup | letterdown)
 letterup = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | U" |
             "V" | "W" | "X" | "Y" | "Z"
 letterdown = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
              "u" | "v" | "w" | "x" | "y" | "z"
-digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 
+integer = dec-digit | hex-digit | oct-digit | bin-digit
+rational = [ intenger ] '.' integer
+bin-integer	= ( "0b" | "0B" ) bin-digit { bin-digit }
+oct-integer	= ( "0o" | "0O" ) oct-digt { oct-digit }
+hex-integer	= ( "0x" | "0X" ) hex-digit { hex-digit }
+dec-integer	= digit { digit }
+hex-digit = digit | 'a' | 'b' | 'c' | 'd' | 'e' | 'f'
+			 | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
+digit = oct-digit | '8' | '9'
+oct-digit = bin-digit | '2' | '3' | '4' | '5' | '6' | '7'
+bin-digit = '0' | '1'
+comment	= "// " ? any-char ? "\n"
+		| "/*" ? any-char "*/"
+any-char = letter | digit | symbols
+symbols = "'" | """ | "|" | "\" | "!" | "@" | "#" | "$" | "%" | "¨" | "&" | "*" | "(" | ")" | "-" | "_" | "§" | "´" | "`" |
+          "[" | "]" | "{" | "}" | "ª" | "^" | "~" | "º" | "," | "<" | "." | ">" | ";" | ":" | "/" | "?" | "°" | "-" | "+"
+
+
+(logic and relational tokens)
 condition = (identifier | digit) (logicoperator | relationaloperators) (identifier | digit)
 logicoperator = "|" | "&&" | "!"
 relationaloperators = "<" | ">" | "==" | ">=" | "<=" | "!="
 increment = identifier increase
 increase = "++" | "--"
+
+(keywords)
+kw_break = "momentoOportuno"
+type = kw_int | kw_float | kw_double | kw_char | kw_string | kw_boolean | kw_FILE
+kw_int = "marioKart"
+kw_float = "donkey" 
+kw_double = "kong"
+kw_char = "mario"
+kw_string = "superMario"   ** superMario = char[char] ?
+kw_boolean = "zelda"
+kw_FILE = "nintendo"
+kw_if = "fezALista?"
+kw_elif = "naoFez?"
+kw_else = "nao?"
+kw_while = "eAGreve?"
+kw_for = "adiaarOTP"
+kw_switch = "temosUmImpasse!"
+kw_typedef = "penseBem"
+kw_struct = "8886"
+kw_return = "chamada!"
+kw_sizeof = "sizeof"
+kw_enum = "eOVisto?"
