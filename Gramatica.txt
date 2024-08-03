@@ -126,7 +126,7 @@ kw_int = "marioKart"
 kw_float = "donkey" 
 kw_double = "kong"
 kw_char = "mario"
-kw_string = "superMario"   ** superMario = char[char] ?
+kw_string = "superMario" 
 kw_boolean = "zelda"
 kw_FILE = "nintendo"
 kw_if = "fezALista?"
