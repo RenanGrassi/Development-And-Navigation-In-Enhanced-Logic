@@ -8,11 +8,11 @@ statement = declarationVariable | assignment | ifStatement | forStatement | whil
 
 
 (declarationVariable)
-declarationVariable = type identifier ";" ; 
+declarationVariable = type identifier ";" 
 
 
 (assignment)
-assignment = type identifier "=" expression ";" ;
+assignment = type identifier "=" expression ";" 
 
 
 (ifstatement)
@@ -31,7 +31,7 @@ forStatement = kw_for "("assignment ";" condition ";" increment")" "{" {statemen
 
 (switchStatement)
 switchStatement = kw_switch "("identifier")" "{" {case} {default} "}"
-case = "chwazi" number ":" {statement} ";" kw_break ";"
+case = "chwazi" digit{digit} ":" {statement} ";" kw_break ";"
 default = "marcos" ":" {statement} ";"
 
 
