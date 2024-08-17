@@ -16,6 +16,7 @@ kong               "kong"
 mario              "mario"
 superMario         "superMario"
 zelda              "zelda"
+tipo                {marioKart}{donkey}{kong}{mario}{superMario}{zelda}
 
 /* Comandos e palavras reservadas */
 fezALista         "fezALista?" 
@@ -73,42 +74,37 @@ decimal     [+]?[-]?{digit}+[.]{digit}+
 {positive}        { printf("Foi encontrado um numero inteiro positivo. LEXEMA: %s\n", yytext); }
 {negative}        { printf("Foi encontrado um numero inteiro negativo. LEXEMA: %s\n", yytext); }
 {decimal}         { printf("Foi encontrado um numero com parte decimal. LEXEMA: %s\n", yytext); }
-{marioKart}       { printf("Tipo de dado encontrado: marioKart (Int). LEXEMA: %s\n", yytext); }
-{donkey}          { printf("Tipo de dado encontrado: donkey (Float). LEXEMA: %s\n", yytext); }
-{kong}            { printf("Tipo de dado encontrado: kong (Double). LEXEMA: %s\n", yytext); }
-{mario}           { printf("Tipo de dado encontrado: mario (Char). LEXEMA: %s\n", yytext); }
-{superMario}      { printf("Tipo de dado encontrado: superMario (String). LEXEMA: %s\n", yytext); }
-{zelda}           { printf("Tipo de dado encontrado: zelda (Boolean). LEXEMA: %s\n", yytext); }
-{fezALista}      { printf("Comando encontrado: fezALista? (If). LEXEMA: %s\n", yytext); }
-{nao}            { printf("Comando encontrado: nao? (Else). LEXEMA: %s\n", yytext); }
-{naoFez}         { printf("Comando encontrado: naoFez? (Elif). LEXEMA: %s\n", yytext); }
-{eAGreve}        { printf("Comando encontrado: eAGreve? (While). LEXEMA: %s\n", yytext); }
-{adiaarOTP}       { printf("Comando encontrado: adiaarOTP (For). LEXEMA: %s\n", yytext); }
-{vamosLa}        { printf("Comando encontrado: vamosLa! (Go to). LEXEMA: %s\n", yytext); }
-{momentoOportuno} { printf("Comando encontrado: momentoOportuno (Break). LEXEMA: %s\n", yytext); }
-{muitoBem}       { printf("Comando encontrado: muitoBem! (Continue). LEXEMA: %s\n", yytext); }
-{temosUmImpasse} { printf("Comando encontrado: temosUmImpasse! (Switch). LEXEMA: %s\n", yytext); }
-{chwazi}          { printf("Comando encontrado: chwazi (Case). LEXEMA: %s\n", yytext); }
-{marcos}          { printf("Comando encontrado: marcos (Default). LEXEMA: %s\n", yytext); }
-{veeeeja}         { printf("Comando encontrado: veeeeja (print). LEXEMA: %s\n", yytext); }
-{vejaBem}        { printf("Comando encontrado: vejaBem! (print diferente). LEXEMA: %s\n", yytext); }
-{diga}           { printf("Comando encontrado: diga! (Ler da tela). LEXEMA: %s\n", yytext); }
-{masNaoEObvio}   { printf("Comando encontrado: masNaoEObvio? (Criar Função). LEXEMA: %s\n", yytext); }
-{masIssoEObvio}  { printf("Comando encontrado: masIssoEObvio! (Chamar função). LEXEMA: %s\n", yytext); }
-{nintendo}        { printf("Tipo encontrado: nintendo (TipoFile). LEXEMA: %s\n", yytext); }
-{switch}          { printf("Comando encontrado: switch (Abrir). LEXEMA: %s\n", yytext); }
-{wii}             { printf("Comando encontrado: wii (Fechar). LEXEMA: %s\n", yytext); }
-{eOVisto}        { printf("Comando encontrado: eOVisto? (Enum). LEXEMA: %s\n", yytext); }
-{penseBem}        { printf("Comando encontrado: penseBem (Typedef). LEXEMA: %s\n", yytext); }
-{struct_keyword}  { printf("Comando encontrado: 8 8 8 6 (Struct). LEXEMA: %s\n", yytext); }
-{pqEuPosso}       { printf("Comando encontrado: pqEuPosso (Swap). LEXEMA: %s\n", yytext); }
-{naoEMagico}     { printf("Comando encontrado: naoEMagico? (Malloc). LEXEMA: %s\n", yytext); }
-{reuniao14h}      { printf("Comando encontrado: reuniao14h (Free). LEXEMA: %s\n", yytext); }
-{bom_dia}         { printf("Comando encontrado: bom dia! (Void Main). LEXEMA: %s\n", yytext); }
-{boa_tarde}       { printf("Comando encontrado: boa tarde! (Int Main). LEXEMA: %s\n", yytext); }
-{chamada}         { printf("Comando encontrado: chamada! (Return). LEXEMA: %s\n", yytext); }
-{daniboy}         { printf("Tipo encontrado: daniboy (Tipo do arquivo??). LEXEMA: %s\n", yytext); }
-{id}              { printf("Identificador encontrado. LEXEMA: %s\n", yytext); }
+{tipo}            {return TYPE;}
+{fezALista}       {return FEZALISTA;}
+{nao}             {return NAO;}
+{naoFez}          {return NAOFEZ;}
+{eAGreve}         {return EAGREVE;}
+{adiaarOTP}       {return ADIAAROTP;}
+{vamosLa}         {return VAMOSLA;}
+{momentoOportuno} {return MOMENTOOportuno;}
+{muitoBem}        {return MUITOBEM;}
+{temosUmImpasse}  {return TEMOSUMIMPASSE;}
+{chwazi}          {return CHWAZI;}
+{marcos}          {return MARCOS;}
+{veeeeja}         {return VEEEEJA;}
+{vejaBem}         {return VEJABEM;}
+{diga}            {return DIGA;}
+{masNaoEObvio}    {return MASNAOEEOBVIO;}
+{masIssoEObvio}   {return MASISSOEOBVIO;}
+{nintendo}        {return NINTENDO;}
+{switch}          {return SWITCH;}
+{wii}             {return WII;}
+{eOVisto}         {return EOVISTO;}
+{penseBem}        {return PENSEBEM;}
+{struct_keyword}  {return STRUCT_KEYWORD;}
+{pqEuPosso}       {return PQEUPOSSO;}
+{naoEMagico}      {return NAOEMAGICO;}
+{reuniao14h}      {return REUNIAO14H;}
+{bom_dia}         {return BOM_DIA;}
+{boa_tarde}       {return BOA_TARDE;}
+{chamada}         {return CHAMADA;}
+{daniboy}         {return DANIBOY;}
+{id}              {return ID;}
 {string}          { printf("String encontrada: %s\n", yytext); }
 
 "<"                { printf("Operador menor reconhecido: %s \n", yytext); }
