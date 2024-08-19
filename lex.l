@@ -17,7 +17,7 @@ kong               "kong"
 mario              "mario"
 superMario         "superMario"
 zelda              "zelda"
-tipo                {marioKart}{donkey}{kong}{mario}{superMario}{zelda}
+type                {marioKart}|{donkey}|{kong}|{mario}|{superMario}|{zelda}
 
 /* Comandos e palavras reservadas */
 fezALista         "fezALista?" 
@@ -80,7 +80,7 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 {string}              { yylval.string = strdup(yytext); return STRING; }
 {id}                  { yylval.string = strdup(yytext); return IDENTIFIER; }
 
-{tipo}                { return TIPO; }
+{type}                { return TYPE; }
 {fezALista}           { return IF; }
 {nao}                 { return ELSE; }
 {naoFez}              { return ELIF; }
@@ -105,7 +105,7 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 {pqEuPosso}           { return SWAP; }
 {naoEMagico}          { return MALLOC; }
 {reuniao14h}          { return FREE; }
-{bom_dia}             { return VOID_MAIN; }
+{bom_dia}             { return VOID_MAIN; } /* retirei pra facilitar no yacc */
 {boa_tarde}           { return INT_MAIN; }
 {chamada}             { return RETURN; }
 {daniboy}             { return DANIBOY; }

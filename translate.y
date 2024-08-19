@@ -21,7 +21,7 @@
 }
 
 %token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT STRUCT TYPEDEF
-%token PRINT PRINTLN WHILE GOTO SCANF VOID_MAIN INT_MAIN READ_FILE CLOSE_FILE OPENING_MODE
+%token PRINT PRINTLN WHILE GOTO SCANF INT_MAIN READ_FILE CLOSE_FILE OPENING_MODE
 %token OPEN_KEY CLOSE_KEY OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET COMMA SEMICOLON COLON
 %token TIPO CALL ARQUIVO ENUM STRUCT_KEYWORD SWAP MALLOC FREE DANIBOY LT GT LE GE EQ NE AND OR NEGA
 %token SUB MUL DIV MOD INCREMENT DECREMENT ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN XOR LEFT_SHIFT
@@ -36,6 +36,7 @@
 %token <funct> FUNCTION
 %token <superMario> RELACIONAL_OPERATORS
 %token <superMario> LOGIC_OPERATORS
+%token <superMario> TYPE
 
 %type <type> type
 %type <identifier> var
@@ -50,21 +51,19 @@
 
 %start program
 
+%left INT_MAIN
+%right FUNCTION
+
 %%
 
-type: TIPO
-    | INT_MAIN
-    | VOID_MAIN
-    | STRUCT
-    | ENUM
-    | STRUCT_KEYWORD
+type: TYPE { $$ = TYPE; }
     ;
 
 program: /* empty */
        | program functions
        | program INT_MAIN stmts
-       | program VOID_MAIN stmts
        ;
+
 
 functions: function
          | functions function
@@ -73,8 +72,8 @@ functions: function
 function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
         ;
 
-stmts: stmt stmts
-     | /* empty */
+stmts: stmt stmts { $$ = STMT }
+     | /* empty */ { $$ = NONE; }
      ;
 
 stmt: if {addId(fezALista, palavraChave);}
@@ -112,10 +111,10 @@ parameters: parameter
 parameter: type IDENTIFIER
          ;
 
-call_function: IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON
+call_function: IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION_CALL; }
              ;
 
-real_parameters: expr
+real_parameters: expr { $$ = $1; }
                | real_parameters COMMA expr
                ;
 
@@ -185,29 +184,29 @@ input_text: var
 
 condition: expr RELACIONAL_OPERATORS expr
          | expr LOGIC_OPERATORS expr
-         | /* empty */
+         | /* empty */ { $$ = NONE; }
          ;
 
-increment: var ADD ADD
-         | var MINUS MINUS
-         | /* empty */
+increment: var ADD ADD { $$ = INCREMENT; }
+         | var MINUS MINUS { $$ = DECREMENT; }
+         | /* empty */ { $$ = NO_INCREMENT; }
          ;
 
 expr: term
     | call_function
-    | OPEN_PARENTHESES expr CLOSE_PARENTHESES
+    | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2; }
     ;
 
-term: DIGITS
-    | var
-    | literal
-    | DECIMAL
+term: DIGITS { $$ = INT; }
+    | var { $$ = $1.type; }
+    | literal { $$ = $1; }
+    | DECIMAL { $$ = FLOAT; }
     ;
 
 var: IDENTIFIER
    ;
 
-literal: LITERAL_CHAR
+literal: LITERAL_CHAR { $$ = LITERAL_CHAR; }
         | LITERAL_STRING
         | LITERAL_BOOL
         ;
