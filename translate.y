@@ -5,7 +5,7 @@
 %}
 
 %code_requires{
-    #include "TabelaSimbolos.h"
+    #include "tabelaDeSimbolos/TabelaDeSimbolos.h"
 }
 
 
@@ -58,8 +58,8 @@ stmts: stmt stmts
     |
     ;
 
-stmt: if
-    | while
+stmt: if {addId(fezALista, palavraChave)}
+    | while {addId(eAGreve,palavraChave)}
     | for
     | switch
     | command
@@ -206,3 +206,30 @@ literal: LITERAL_CHAR
         ;
 
 %%
+
+void addId(char *id, Enumtypes type) {
+    if(symbolTableFindInBlock(st, id)) {
+        char msg[100];
+        sprintf(msg, "Redeclaração do identificador \"%s\"", id);
+        yyerror(msg);
+        onExit();
+        exit(0);
+    }
+    symbolTableInsert(st, symbolNew(id, type, 1));
+}
+
+int main()
+{
+    return yyparse();
+    
+}
+
+void yyerror(const char *s)
+{
+    fprintf(stderr, "Error: %s\n", s);
+}
+
+int yywrap()
+{
+    return 1;
+}
