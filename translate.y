@@ -23,6 +23,9 @@
 %token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT STRUCT TYPEDEF
 %token PRINT PRINTLN WHILE GOTO SCANF VOID_MAIN INT_MAIN READ_FILE CLOSE_FILE OPENING_MODE
 %token OPEN_KEY CLOSE_KEY OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET COMMA SEMICOLON COLON
+%token TIPO CALL ARQUIVO ENUM STRUCT_KEYWORD SWAP MALLOC FREE DANIBOY LT GT LE GE EQ NE AND OR NEGA
+%token SUB MUL DIV MOD INCREMENT DECREMENT ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN XOR LEFT_SHIFT
+%token RIGHT_SHIFT QUEST SEMI_COLON BLOCK_CLOSE BLOCK_OPEN DOT ARROW SUSTENIDO
 %token ASSIGN ADD MINUS INPUT
 %token <superMario> LITERAL_STRING
 %token <superMario> LITERAL_BOOL
@@ -33,42 +36,49 @@
 %token <funct> FUNCTION
 %token <superMario> RELACIONAL_OPERATORS
 %token <superMario> LOGIC_OPERATORS
-%token type
 
 %type <type> type
 %type <identifier> var
 %type <type> expr
 %type <type> term
 %type <type> call_function
-%type <type> literal
+%type <superMario> literal
+%type <superMario> real_parameters
+%type <type> condition
+%type <type> increment
+%type <type> stmts
 
 %start program
 
-%left RELACIONAL_OPERATORS
-%left LOGIC_OPERATORS 
-
 %%
 
+type: TIPO
+    | INT_MAIN
+    | VOID_MAIN
+    | STRUCT
+    | ENUM
+    | STRUCT_KEYWORD
+    ;
+
 program: /* empty */
-         | program programs
+       | program functions
+       | program INT_MAIN stmts
+       | program VOID_MAIN stmts
+       ;
+
+functions: function
+         | functions function
          ;
-
-programs: functions
-        | INT_MAIN stmts
-        | VOID_MAIN stmts
-
-functions: function functions
-            ;
 
 function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
         ;
 
 stmts: stmt stmts
-    |
-    ;
+     | /* empty */
+     ;
 
-stmt: if {addId(fezALista, palavraChave)}
-    | while {addId(eAGreve,palavraChave)}
+stmt: if {addId(fezALista, palavraChave);}
+    | while {addId(eAGreve, palavraChave);}
     | for
     | switch
     | command
@@ -85,7 +95,6 @@ command: return
        | file
        ;
 
-
 file: file_open
     | file_close
     ;
@@ -96,9 +105,8 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING COMMA OPENING_MODE CLO
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
 
-parameters: parameter parameters
-          | COMMA parameters
-          |
+parameters: parameter
+          | parameters COMMA parameter
           ;
 
 parameter: type IDENTIFIER
@@ -107,13 +115,9 @@ parameter: type IDENTIFIER
 call_function: IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON
              ;
 
-real_parameters: real_parameter real_parameters
-               |COMMA real_parameters
-               |
+real_parameters: expr
+               | real_parameters COMMA expr
                ;
-            
-real_parameter: expr
-              ;
 
 return: RETURN expr SEMICOLON
       | RETURN SEMICOLON
@@ -122,8 +126,8 @@ return: RETURN expr SEMICOLON
 assign: var ASSIGN expr SEMICOLON
       ;
 
-declarations: declaration declarations
-            | 
+declarations: declaration
+            | declarations declaration
             ;
 
 declaration: type IDENTIFIER SEMICOLON
@@ -141,54 +145,56 @@ elif: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block elif
     ;
 
 else: ELSE COLON code_block
-    |
     ;
 
-while: WHILE OPEN_PARENTHESES code_block CLOSE_PARENTHESES COLON
+while: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
     ;
 
-for: FOR OPEN_PARENTHESES ASSIGN SEMICOLON condition SEMICOLON increment CLOSE_PARENTHESES COLON code_block
+for: FOR OPEN_PARENTHESES assign SEMICOLON condition SEMICOLON increment CLOSE_PARENTHESES COLON code_block
    ;
 
 switch: SWITCH OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES COLON cases default
       ;
 
 cases: CASE DIGITS COLON stmts cases
-     |
+     | /* empty */
      ;
 
 default: DEFAULT COLON stmts
-        |
+        | /* empty */
         ;
 
 print: PRINT OPEN_PARENTHESES print_texts CLOSE_PARENTHESES SEMICOLON
      | PRINTLN OPEN_PARENTHESES print_texts CLOSE_PARENTHESES SEMICOLON
      ;
 
-print_texts: print_text print_texts
+print_texts: print_text
+           | print_texts COMMA print_text
            ;
 
 print_text: LITERAL_STRING
-          | var COMMA
+          | var
           ;
 
 input: INPUT OPEN_PARENTHESES input_text CLOSE_PARENTHESES SEMICOLON
      ;
 
-input_text: var COMMA
+input_text: var
+          | input_text COMMA var
           ;
 
 condition: expr RELACIONAL_OPERATORS expr
-        | expr LOGIC_OPERATORS expr
-        ;
+         | expr LOGIC_OPERATORS expr
+         | /* empty */
+         ;
 
 increment: var ADD ADD
-        | var MINUS MINUS
-        ;
+         | var MINUS MINUS
+         | /* empty */
+         ;
 
 expr: term
     | call_function
-    | condition
     | OPEN_PARENTHESES expr CLOSE_PARENTHESES
     ;
 
@@ -217,12 +223,12 @@ void addId(char *id, Enumtypes type) {
         exit(0);
     }
     symbolTableInsert(st, symbolNew(id, type, 1));
+    imprimeTabelaDeSimbolos(tabelaDeSimbolos);
 }
 
-int main()
-{
+int main(){
+    TabelaDeSimbolos tabelaDeSimbolos;
     return yyparse();
-    
 }
 
 void yyerror(const char *s)

@@ -85,20 +85,58 @@ extern int yydebug;
     COMMA = 286,                   /* COMMA  */
     SEMICOLON = 287,               /* SEMICOLON  */
     COLON = 288,                   /* COLON  */
-    ASSIGN = 289,                  /* ASSIGN  */
-    ADD = 290,                     /* ADD  */
-    MINUS = 291,                   /* MINUS  */
-    INPUT = 292,                   /* INPUT  */
-    LITERAL_STRING = 293,          /* LITERAL_STRING  */
-    LITERAL_BOOL = 294,            /* LITERAL_BOOL  */
-    LITERAL_CHAR = 295,            /* LITERAL_CHAR  */
-    IDENTIFIER = 296,              /* IDENTIFIER  */
-    DIGITS = 297,                  /* DIGITS  */
-    DECIMAL = 298,                 /* DECIMAL  */
-    FUNCTION = 299,                /* FUNCTION  */
-    RELACIONAL_OPERATORS = 300,    /* RELACIONAL_OPERATORS  */
-    LOGIC_OPERATORS = 301,         /* LOGIC_OPERATORS  */
-    type = 302                     /* type  */
+    TIPO = 289,                    /* TIPO  */
+    CALL = 290,                    /* CALL  */
+    ARQUIVO = 291,                 /* ARQUIVO  */
+    ENUM = 292,                    /* ENUM  */
+    STRUCT_KEYWORD = 293,          /* STRUCT_KEYWORD  */
+    SWAP = 294,                    /* SWAP  */
+    MALLOC = 295,                  /* MALLOC  */
+    FREE = 296,                    /* FREE  */
+    DANIBOY = 297,                 /* DANIBOY  */
+    LT = 298,                      /* LT  */
+    GT = 299,                      /* GT  */
+    LE = 300,                      /* LE  */
+    GE = 301,                      /* GE  */
+    EQ = 302,                      /* EQ  */
+    NE = 303,                      /* NE  */
+    AND = 304,                     /* AND  */
+    OR = 305,                      /* OR  */
+    NEGA = 306,                    /* NEGA  */
+    SUB = 307,                     /* SUB  */
+    MUL = 308,                     /* MUL  */
+    DIV = 309,                     /* DIV  */
+    MOD = 310,                     /* MOD  */
+    INCREMENT = 311,               /* INCREMENT  */
+    DECREMENT = 312,               /* DECREMENT  */
+    ADD_ASSIGN = 313,              /* ADD_ASSIGN  */
+    SUB_ASSIGN = 314,              /* SUB_ASSIGN  */
+    MUL_ASSIGN = 315,              /* MUL_ASSIGN  */
+    DIV_ASSIGN = 316,              /* DIV_ASSIGN  */
+    MOD_ASSIGN = 317,              /* MOD_ASSIGN  */
+    XOR = 318,                     /* XOR  */
+    LEFT_SHIFT = 319,              /* LEFT_SHIFT  */
+    RIGHT_SHIFT = 320,             /* RIGHT_SHIFT  */
+    QUEST = 321,                   /* QUEST  */
+    SEMI_COLON = 322,              /* SEMI_COLON  */
+    BLOCK_CLOSE = 323,             /* BLOCK_CLOSE  */
+    BLOCK_OPEN = 324,              /* BLOCK_OPEN  */
+    DOT = 325,                     /* DOT  */
+    ARROW = 326,                   /* ARROW  */
+    SUSTENIDO = 327,               /* SUSTENIDO  */
+    ASSIGN = 328,                  /* ASSIGN  */
+    ADD = 329,                     /* ADD  */
+    MINUS = 330,                   /* MINUS  */
+    INPUT = 331,                   /* INPUT  */
+    LITERAL_STRING = 332,          /* LITERAL_STRING  */
+    LITERAL_BOOL = 333,            /* LITERAL_BOOL  */
+    LITERAL_CHAR = 334,            /* LITERAL_CHAR  */
+    IDENTIFIER = 335,              /* IDENTIFIER  */
+    DIGITS = 336,                  /* DIGITS  */
+    DECIMAL = 337,                 /* DECIMAL  */
+    FUNCTION = 338,                /* FUNCTION  */
+    RELACIONAL_OPERATORS = 339,    /* RELACIONAL_OPERATORS  */
+    LOGIC_OPERATORS = 340          /* LOGIC_OPERATORS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -120,7 +158,7 @@ union YYSTYPE
     Type type;
     Function* funct;
 
-#line 124 "translate.tab.h"
+#line 162 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
