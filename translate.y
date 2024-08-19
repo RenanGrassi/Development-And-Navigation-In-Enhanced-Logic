@@ -2,11 +2,9 @@
 #include stdio.h
 #include stdlib.h
 #include string.h
+#include "tabelaDeSimbolos/TabelaDeSimbolos.h"
 %}
 
-%code_requires{
-    #include "tabelaDeSimbolos/TabelaDeSimbolos.h"
-}
 
 
 %union{
@@ -18,8 +16,8 @@
     bool zelda;
     identifier identifier;
     identifiers identifiers;
-    Type type
-    Function* funct
+    Type type;
+    Function* funct;
 }
 
 %token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT STRUCT TYPEDEF
@@ -28,7 +26,6 @@
 %token ASSIGN ADD MINUS INPUT
 %token <superMario> LITERAL_STRING
 %token <superMario> LITERAL_BOOL
-%token <superMario> TYPE
 %token <mario> LITERAL_CHAR
 %token <identifier> IDENTIFIER
 %token <marioKart> DIGITS
@@ -36,6 +33,8 @@
 %token <funct> FUNCTION
 %token <superMario> RELACIONAL_OPERATORS
 %token <superMario> LOGIC_OPERATORS
+%token type
+
 %type <type> type
 %type <identifier> var
 %type <type> expr
@@ -50,9 +49,19 @@
 
 %%
 
-program: VOID_MAIN stmts
-    | INT_MAIN stmts
-    ;
+program: /* empty */
+         | program programs
+         ;
+
+programs: functions
+        | INT_MAIN stmts
+        | VOID_MAIN stmts
+
+functions: function functions
+            ;
+
+function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
+        ;
 
 stmts: stmt stmts
     |
@@ -71,16 +80,11 @@ command: return
        | call_function
        | BREAK SEMICOLON
        | CONTINUE SEMICOLON
-       | declaration
+       | declarations
        | input
        | file
        ;
 
-struct: STRUCT OPEN_KEY declarations CLOSE_KEY
-      ;
-
-typedef: TYPEDEF IDENTIFIER IDENTIFIER SEMICOLON
-       ;
 
 file: file_open
     | file_close
@@ -91,9 +95,6 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING COMMA OPENING_MODE CLO
 
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
-
-function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
-        ;
 
 parameters: parameter parameters
           | COMMA parameters
@@ -152,7 +153,7 @@ for: FOR OPEN_PARENTHESES ASSIGN SEMICOLON condition SEMICOLON increment CLOSE_P
 switch: SWITCH OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES COLON cases default
       ;
 
-cases: CASE digits COLON stmts cases
+cases: CASE DIGITS COLON stmts cases
      |
      ;
 
@@ -193,7 +194,7 @@ expr: term
 
 term: DIGITS
     | var
-    |literal
+    | literal
     | DECIMAL
     ;
 
