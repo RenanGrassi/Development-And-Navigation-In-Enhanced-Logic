@@ -28,7 +28,7 @@
 %token ASSIGN ADD MINUS INPUT
 %token <superMario> LITERAL_STRING
 %token <superMario> LITERAL_BOOL
-%token <superMario> Type
+%token <superMario> TYPE
 %token <mario> LITERAL_CHAR
 %token <identifier> IDENTIFIER
 %token <marioKart> DIGITS
