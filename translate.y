@@ -51,8 +51,7 @@
 
 %start program
 
-%left INT_MAIN
-%right FUNCTION
+
 
 %%
 
@@ -60,17 +59,26 @@ type: TYPE { $$ = TYPE; }
     ;
 
 program: /* empty */
-       | program functions
-       | program INT_MAIN stmts
+       | functions main
        ;
 
-
-functions: function
-         | functions function
+functions: function functions
+         | 
          ;
 
-function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
+function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
         ;
+
+parameters: COMMA parameter parameters
+          | 
+          ;
+
+parameter: type IDENTIFIER
+         | 
+         ;
+
+main: INT_MAIN stmts
+    ;
 
 stmts: stmt stmts { $$ = STMT }
      | /* empty */ { $$ = NONE; }
@@ -89,7 +97,7 @@ command: return
        | call_function
        | BREAK SEMICOLON
        | CONTINUE SEMICOLON
-       | declarations
+       | declaration
        | input
        | file
        ;
@@ -103,13 +111,6 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING COMMA OPENING_MODE CLO
 
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
-
-parameters: parameter
-          | parameters COMMA parameter
-          ;
-
-parameter: type IDENTIFIER
-         ;
 
 call_function: IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION_CALL; }
              ;
@@ -125,25 +126,18 @@ return: RETURN expr SEMICOLON
 assign: var ASSIGN expr SEMICOLON
       ;
 
-declarations: declaration
-            | declarations declaration
-            ;
-
 declaration: type IDENTIFIER SEMICOLON
            ;
 
 code_block: OPEN_KEY stmts CLOSE_KEY
           ;
 
-if: IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block elif
-    | IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else
+if: IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else
     ;
 
-elif: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block elif
-    | ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else
-    ;
-
-else: ELSE COLON code_block
+else: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else
+    | ELSE COLON code_block
+    | 
     ;
 
 while: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
@@ -152,10 +146,10 @@ while: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
 for: FOR OPEN_PARENTHESES assign SEMICOLON condition SEMICOLON increment CLOSE_PARENTHESES COLON code_block
    ;
 
-switch: SWITCH OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES COLON cases default
+switch: SWITCH OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON cases default
       ;
 
-cases: CASE DIGITS COLON stmts cases
+cases: CASE expr COLON stmts cases
      | /* empty */
      ;
 
