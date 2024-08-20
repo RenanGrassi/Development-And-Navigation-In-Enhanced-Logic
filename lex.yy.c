@@ -2342,9 +2342,3 @@ void yyfree (void * ptr )
 #line 181 "lex.l"
 
 
-int main(void) 
-{ 
-    /* Call the lexer, then quit. */ 
-    yylex(); 
-    return 0; 
-}

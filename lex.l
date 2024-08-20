@@ -179,10 +179,3 @@ literal_char     {single_quot}.{single_quot}
 "#"                  { return SUSTENIDO; }
 
 %%
-
-int main(void) 
-{ 
-    /* Call the lexer, then quit. */ 
-    yylex(); 
-    return 0; 
-}
