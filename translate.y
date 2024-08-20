@@ -265,8 +265,9 @@ void addId(char *id, Enumtypes type) {
 }*/
 
 int main(){
+    yyparse();
     TabelaDeSimbolos tabelaDeSimbolos;
-    return yyparse();
+    return 0;
 }
 
 void yyerror(const char *s)
