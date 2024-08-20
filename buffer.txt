@@ -4,3 +4,4 @@
 {boa_tarde}           { return INT_MAIN; }
 {logic_operator}      { yylval.str = strdup(yytext); return LOGIC_OPERATORS; }
 {relacional_op}       { yylval.str = strdup(yytext); return RELACIONAL_OPERATORS; }
+{literal_bool}        { yylval.str = strdup(yytext); return LITERAL_BOOL; }

@@ -44,6 +44,12 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 15 "translate.y"
+
+     #include "tabelaDeSimbolos/TabelaDeSimbolos.h" 
+
+#line 53 "translate.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -128,7 +134,7 @@ extern int yydebug;
     IDENTIFIER = 329,              /* IDENTIFIER  */
     DIGITS = 330,                  /* DIGITS  */
     DECIMAL = 331,                 /* DECIMAL  */
-    FUNCTION = 332,                /* FUNCTION  */
+    FUNCT = 332,                   /* FUNCT  */
     RELACIONAL_OPERATORS = 333,    /* RELACIONAL_OPERATORS  */
     LOGIC_OPERATORS = 334,         /* LOGIC_OPERATORS  */
     TYPE = 335                     /* TYPE  */
@@ -140,20 +146,19 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 15 "translate.y"
+#line 19 "translate.y"
 
     char* str;
     int iValue;
     double real;
-    char mario;
-    float donkey;
-    bool zelda;
-    identifier identifier;
-    identifiers identifiers;
-    Type type;
+    char caractere;
+    Identificador identifier;
+    Identificadores identifiers;
+    Tipo type;
+    RealParameters types;
     Function* funct;
 
-#line 157 "translate.tab.h"
+#line 162 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -20,12 +20,11 @@ extern void yyerror(const char *);
     char* str;
     int iValue;
     double real;
-    char mario;
-    float donkey;
-    bool zelda;
+    char caractere;
     Identificador identifier;
     Identificadores identifiers;
     Tipo type;
+    RealParameters types;
     Function* funct;
 }
 
@@ -38,11 +37,11 @@ extern void yyerror(const char *);
 %token ASSIGN ADD MINUS INPUT
 %token <str> LITERAL_STRING
 %token <str> LITERAL_BOOL
-%token <mario> LITERAL_CHAR
+%token <caractere> LITERAL_CHAR
 %token <identifier> IDENTIFIER
 %token <iValue> DIGITS
 %token <real> DECIMAL
-%token <funct> FUNCTION
+%token <funct> FUNCT
 %token <str> RELACIONAL_OPERATORS
 %token <str> LOGIC_OPERATORS
 %token <str> TYPE
@@ -52,8 +51,10 @@ extern void yyerror(const char *);
 %type <type> expr
 %type <type> term
 %type <type> call_function
-%type <str> literal
-%type <str> real_parameters
+%type <type> literal
+%type <type> real_parameters
+%type <type> real_parameters2
+%type <type> real_parameter
 %type <type> condition
 %type <type> stmts
 %type <type> increment_stmt  /* Adding type declaration for increment_stmt */
@@ -87,21 +88,21 @@ functions: function functions
          | 
          ;
 
-function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE
+function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE
         ;
 
 parameters: COMMA parameter parameters
-          | 
+          | /*empty*/
           ;
 
 parameter: type IDENTIFIER
-         | 
+         | /*empty*/
          ;
 
 main: INT_MAIN stmts
     ;
 
-stmts: stmt stmts { $$ = STMT; }
+stmts: stmt stmts { $$ = TYPE; }
      | /* empty */ { $$ = NONE; }
      ;
 
@@ -115,7 +116,7 @@ stmt: if_stmt /*{addId(fezALista, palavraChave);}*/
 command: return_stmt
        | assign_stmt
        | print_stmt
-       | call_function
+       | call_function SEMI_COLON
        | BREAK SEMICOLON
        | CONTINUE SEMICOLON
        | declaration
@@ -133,12 +134,19 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING CLOSE_PARENTHESES SEMI
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
 
-call_function: IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION_CALL; }
+call_function: FUNCTION_CALL OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION; }
              ;
 
-real_parameters: expr { $$ = $1; }
-               | real_parameters COMMA expr
+real_parameters: real_parameter real_parameters2 
+               | { $$ = NONE; }
                ;
+
+real_parameters2: COMMA real_parameter real_parameters2 { $$ = $2; }
+                | { $$ = NONE; }
+                ;
+
+real_parameter: expr 
+                ;
 
 return_stmt: RETURN expr SEMICOLON
            | RETURN SEMICOLON
@@ -222,9 +230,9 @@ increment_stmt: var ADD ADD { $$ = $1.type; } /* Assigning var's type */
               | var MINUS MINUS { $$ = $1.type; } /* Assigning var's type */
               ;
 
-expr: term
-    | call_function
-    | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2.type; }
+expr: term { $$ = $1; }
+    | call_function { $$ = $1; }
+    | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2; }
     ;
 
 term: DIGITS { $$ = INT; }
@@ -236,9 +244,9 @@ term: DIGITS { $$ = INT; }
 var: IDENTIFIER
    ;
 
-literal: LITERAL_CHAR { $$ = LITERAL_CHAR; }
-        | LITERAL_STRING
-        | LITERAL_BOOL
+literal: LITERAL_CHAR { $$ = CHAR; }
+        | LITERAL_STRING { $$ = STRING; }
+        | LITERAL_BOOL { $$ =  BOOLEAN; }
         ;
 
 %%

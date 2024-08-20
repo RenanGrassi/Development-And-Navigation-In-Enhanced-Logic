@@ -57,8 +57,8 @@ chamada            chamada
 daniboy            daniboy
 
 
-and                &&
-or                 ||
+and                \&\&
+or                 \|\|
 logic_operator     ({and}|{or})
 eq                 \=\=
 ne                 \!\=
@@ -70,12 +70,12 @@ relacional_op      ({eq}|{ne}|{gt}|{ge}|{lt}|{le})
 
 digit       [0-9]
 digits      {digit}+
-letter      [a-zA-Z_]
+letter      [a-zA-Z]
 id          ({letter}({letter}|{digit})*)
 number      ({digit}+)
 pointer     [\*]
 string      \"([^\"]|\\\")*\" 
-identifier         (_|{letter})(_|{letter}|{digit})*
+identifier  (_|{letter})(_|{letter}|{digit})*
 
 
 decimal     [-]?{digit}+[.]{digit}+ 
@@ -83,6 +83,12 @@ decimal     [-]?{digit}+[.]{digit}+
 /* Comentários */
 single_line_comment  "//[^\n]*"
 multi_line_comment   "/\([^]|\+[^/])\+/"
+
+quot            \"
+single_quot     \'
+literal_string   ({quot}.*{quot})
+literal_char     {single_quot}.{single_quot}
+
 
 
 /*ver oq foi alterado do int main no git para voltar*/
@@ -125,6 +131,8 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 {decimal}             { yylval.real = atof(yytext); return DECIMAL; }
 {string}              { yylval.str = strdup(yytext); return STRING; }
 {identifier}          { yylval.str = strdup(yytext); return IDENTIFIER; }
+{literal_string}      { yylval.str = strdup(yytext); return LITERAL_STRING; }
+{literal_char}        { yylval.caractere =  yytext[0]; return LITERAL_CHAR; }
 
 
 {single_line_comment}    { /* Ignorar comentários de uma linha */ }
@@ -169,7 +177,6 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 "."                  { return DOT; }
 "->"                 { return ARROW; }
 "#"                  { return SUSTENIDO; }
-.                     { printf("Token não reconhecido. LEXEMA: %s\n", yytext); return INVALID; }
 
 %%
 

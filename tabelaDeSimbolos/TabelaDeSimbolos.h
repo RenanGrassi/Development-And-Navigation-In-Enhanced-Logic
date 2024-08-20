@@ -6,8 +6,19 @@ typedef enum {
     INT,
     FLOAT,
     CHAR,
+    BOOLEAN,
+    STRING,
+    FUNCTION,
+    NONE,
     // Add other types as needed
 } Type;
+
+typedef struct 
+{
+    Type* types;
+    int size;
+} RealParameters;
+
 
 typedef struct {
     char* name;
@@ -27,8 +38,6 @@ typedef struct {
 
 typedef enum {
     STMT,
-    NONE,
-    FUNCTION_CALL,
     // Add other enums as needed
 } Enumtypes;
 
