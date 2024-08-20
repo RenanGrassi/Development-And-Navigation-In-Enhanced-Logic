@@ -11,61 +11,73 @@
 ws          [ \t\n]+ 
 
 /* Tipos primitivos de dados */
-marioKart          "marioKart"
-donkey             "donkey"
-kong               "kong"
-mario              "mario"
-superMario         "superMario"
-zelda              "zelda"
-type                {marioKart}|{donkey}|{kong}|{mario}|{superMario}|{zelda}
+marioKart          marioKart
+donkey             donkey
+kong               kong
+mario              mario
+superMario         superMario
+zelda              zelda
+type               {marioKart}|{donkey}|{kong}|{mario}|{superMario}|{zelda}
 
 /* Comandos e palavras reservadas */
-fezALista         "fezALista?" 
-nao               "nao?"
-naoFez            "naoFez?"
-eAGreve           "eAGreve?"
-adiaarOTP          "adiaarOTP"
-vamosLa           "vamosLa!"
-momentoOportuno    "momentoOportuno"  
-muitoBem          "muitoBem!"
-temosUmImpasse    "temosUmImpasse!"
-chwazi             "chwazi"
-marcos             "marcos"
-veeeeja            "veeeeja"
-vejaBem           "vejaBem!"
-diga              "diga!"
-masNaoEObvio      "masNaoEObvio?"
-masIssoEObvio     "masIssoEObvio!"
+fezALista         fezALista 
+nao               nao
+naoFez            naoFez
+eAGreve           eAGreve
+adiaarOTP         adiaarOTP
+vamosLa           vamosLa
+momentoOportuno   momentoOportuno  
+muitoBem          muitoBem
+temosUmImpasse    temosUmImpasse
+chwazi            chwazi
+marcos            marcos
+veeeeja           veeeeja
+vejaBem           vejaBem
+diga              diga
+masNaoEObvio      masNaoEObvio
+masIssoEObvio     masIssoEObvio
 
-eOVisto           "eOVisto?"
-penseBem           "penseBem"
-struct_keyword     "8 8 8 6"
-pqEuPosso          "pqEuPosso"
-naoEMagico        "naoEMagico?"
-reuniao14h         "reuniao14h"
+eOVisto           eOVisto
+penseBem          penseBem
+struct_keyword     8886
+pqEuPosso          pqEuPosso
+naoEMagico        naoEMagico
+reuniao14h         reuniao14h
 
-nintendo           "nintendo"
-switch             "switch"
-wii                "wii"
-bom_dia            "bom dia!" 
-boa_tarde          "boa tarde!" 
-
-
-chamada            "chamada!"
+nintendo           nintendo
+switch             switch
+wii                wii
+bom_dia            bomdia
+boa_tarde          boatarde
 
 
-daniboy            "daniboy" 
+chamada            chamada
 
+
+daniboy            daniboy
+
+
+and                &&
+or                 ||
+logic_operator     {and}|{or}
+eq                 \=\=
+ne                 \!\=
+gt                 \>
+ge                 \>\=
+lt                 \<
+le                 \<\=
+relacional_op      {eq}|{ne}|{gt}|{ge}|{lt}|{le}
 
 digit       [0-9]
+digits      {digit}+
 letter      [a-zA-Z_]
 id          ({letter}({letter}|{digit})*)
 number      ({digit}+)
 pointer     [\*]
 string      \"([^\"]|\\\")*\" 
+identifier         (_|{letter})(_|{letter}|{digit})*
 
-positive    [+]?{digit}+
-negative    [-]{digit}+
+
 decimal     [-]?{digit}+[.]{digit}+ 
 
 /* Comentários */
@@ -74,11 +86,10 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 
 %%
 {ws}+                 { /* Espaços em branco, tabulação e quebra de linha devem ser ignorados. */ }
-{positive}            { yylval.number = atoi(yytext); return INTEGER; }
-{negative}            { yylval.number = atoi(yytext); return INTEGER; }
-{decimal}             { yylval.decimal = atof(yytext); return DECIMAL; }
-{string}              { yylval.string = strdup(yytext); return STRING; }
-{id}                  { yylval.string = strdup(yytext); return IDENTIFIER; }
+
+{decimal}             { yylval.real = atof(yytext); return DECIMAL; }
+{string}              { yylval.str = strdup(yytext); return STRING; }
+{identifier}          { yylval.str = strdup(yytext); return IDENTIFIER; }
 
 {type}                { return TYPE; }
 {fezALista}           { return IF; }
@@ -96,8 +107,9 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 {vejaBem}             { return PRINTLN; }
 {diga}                { return SCANF; }
 {masNaoEObvio}        { return FUNCTION; }
-{masIssoEObvio}       { return CALL; }
+{masIssoEObvio}       { return FUNCTION_CALL; }
 {nintendo}            { return ARQUIVO; }
+{switch}              { return READ_FILE}
 {wii}                 { return CLOSE_FILE; }
 {eOVisto}             { return ENUM; }
 {penseBem}            { return TYPEDEF; }
@@ -109,6 +121,9 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 {boa_tarde}           { return INT_MAIN; }
 {chamada}             { return RETURN; }
 {daniboy}             { return DANIBOY; }
+{logic_operator}      { yylval.str = strdup(yytext); return LOGIC_OPERATORS; }
+{relacional_op}       { yylval.str = strdup(yytext); return RELACIONAL_OPERATORS; }
+{digits}              { yylval.iValue = atoi(yytext); return DIGITS; }
 
 
 {single_line_comment}    { /* Ignorar comentários de uma linha */ }
@@ -143,7 +158,7 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 "?"                  { return QUEST; }
 ":"                  { return COLON; }
 ","                  { return COMMA; }
-";"                  { return SEMI_COLON; }
+";"                  { return SEMICOLON; }
 ")"                  { return CLOSE_PARENTHESES; }
 "("                  { return OPEN_PARENTHESES; }
 "]"                  { return CLOSE_BRACKET; }

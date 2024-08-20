@@ -64,79 +64,74 @@ extern int yydebug;
     SWITCH = 265,                  /* SWITCH  */
     CASE = 266,                    /* CASE  */
     DEFAULT = 267,                 /* DEFAULT  */
-    STRUCT = 268,                  /* STRUCT  */
-    TYPEDEF = 269,                 /* TYPEDEF  */
-    PRINT = 270,                   /* PRINT  */
-    PRINTLN = 271,                 /* PRINTLN  */
-    WHILE = 272,                   /* WHILE  */
-    GOTO = 273,                    /* GOTO  */
-    SCANF = 274,                   /* SCANF  */
-    INT_MAIN = 275,                /* INT_MAIN  */
-    READ_FILE = 276,               /* READ_FILE  */
-    CLOSE_FILE = 277,              /* CLOSE_FILE  */
-    OPENING_MODE = 278,            /* OPENING_MODE  */
-    OPEN_KEY = 279,                /* OPEN_KEY  */
-    CLOSE_KEY = 280,               /* CLOSE_KEY  */
-    OPEN_PARENTHESES = 281,        /* OPEN_PARENTHESES  */
-    CLOSE_PARENTHESES = 282,       /* CLOSE_PARENTHESES  */
-    OPEN_BRACKET = 283,            /* OPEN_BRACKET  */
-    CLOSE_BRACKET = 284,           /* CLOSE_BRACKET  */
-    COMMA = 285,                   /* COMMA  */
-    SEMICOLON = 286,               /* SEMICOLON  */
-    COLON = 287,                   /* COLON  */
-    TIPO = 288,                    /* TIPO  */
-    CALL = 289,                    /* CALL  */
-    ARQUIVO = 290,                 /* ARQUIVO  */
-    ENUM = 291,                    /* ENUM  */
-    STRUCT_KEYWORD = 292,          /* STRUCT_KEYWORD  */
-    SWAP = 293,                    /* SWAP  */
-    MALLOC = 294,                  /* MALLOC  */
-    FREE = 295,                    /* FREE  */
-    DANIBOY = 296,                 /* DANIBOY  */
-    LT = 297,                      /* LT  */
-    GT = 298,                      /* GT  */
-    LE = 299,                      /* LE  */
-    GE = 300,                      /* GE  */
-    EQ = 301,                      /* EQ  */
-    NE = 302,                      /* NE  */
-    AND = 303,                     /* AND  */
-    OR = 304,                      /* OR  */
-    NEGA = 305,                    /* NEGA  */
-    SUB = 306,                     /* SUB  */
-    MUL = 307,                     /* MUL  */
-    DIV = 308,                     /* DIV  */
-    MOD = 309,                     /* MOD  */
-    INCREMENT = 310,               /* INCREMENT  */
-    DECREMENT = 311,               /* DECREMENT  */
-    ADD_ASSIGN = 312,              /* ADD_ASSIGN  */
-    SUB_ASSIGN = 313,              /* SUB_ASSIGN  */
-    MUL_ASSIGN = 314,              /* MUL_ASSIGN  */
-    DIV_ASSIGN = 315,              /* DIV_ASSIGN  */
-    MOD_ASSIGN = 316,              /* MOD_ASSIGN  */
-    XOR = 317,                     /* XOR  */
-    LEFT_SHIFT = 318,              /* LEFT_SHIFT  */
-    RIGHT_SHIFT = 319,             /* RIGHT_SHIFT  */
-    QUEST = 320,                   /* QUEST  */
-    SEMI_COLON = 321,              /* SEMI_COLON  */
-    BLOCK_CLOSE = 322,             /* BLOCK_CLOSE  */
-    BLOCK_OPEN = 323,              /* BLOCK_OPEN  */
-    DOT = 324,                     /* DOT  */
-    ARROW = 325,                   /* ARROW  */
-    SUSTENIDO = 326,               /* SUSTENIDO  */
-    ASSIGN = 327,                  /* ASSIGN  */
-    ADD = 328,                     /* ADD  */
-    MINUS = 329,                   /* MINUS  */
-    INPUT = 330,                   /* INPUT  */
-    LITERAL_STRING = 331,          /* LITERAL_STRING  */
-    LITERAL_BOOL = 332,            /* LITERAL_BOOL  */
-    LITERAL_CHAR = 333,            /* LITERAL_CHAR  */
-    IDENTIFIER = 334,              /* IDENTIFIER  */
-    DIGITS = 335,                  /* DIGITS  */
-    DECIMAL = 336,                 /* DECIMAL  */
-    FUNCTION = 337,                /* FUNCTION  */
-    RELACIONAL_OPERATORS = 338,    /* RELACIONAL_OPERATORS  */
-    LOGIC_OPERATORS = 339,         /* LOGIC_OPERATORS  */
-    TYPE = 340                     /* TYPE  */
+    TYPEDEF = 268,                 /* TYPEDEF  */
+    PRINT = 269,                   /* PRINT  */
+    PRINTLN = 270,                 /* PRINTLN  */
+    WHILE = 271,                   /* WHILE  */
+    GOTO = 272,                    /* GOTO  */
+    SCANF = 273,                   /* SCANF  */
+    INT_MAIN = 274,                /* INT_MAIN  */
+    READ_FILE = 275,               /* READ_FILE  */
+    CLOSE_FILE = 276,              /* CLOSE_FILE  */
+    OPEN_PARENTHESES = 277,        /* OPEN_PARENTHESES  */
+    CLOSE_PARENTHESES = 278,       /* CLOSE_PARENTHESES  */
+    OPEN_BRACKET = 279,            /* OPEN_BRACKET  */
+    CLOSE_BRACKET = 280,           /* CLOSE_BRACKET  */
+    COMMA = 281,                   /* COMMA  */
+    SEMICOLON = 282,               /* SEMICOLON  */
+    COLON = 283,                   /* COLON  */
+    FUNCTION_CALL = 284,           /* FUNCTION_CALL  */
+    ARQUIVO = 285,                 /* ARQUIVO  */
+    ENUM = 286,                    /* ENUM  */
+    STRUCT_KEYWORD = 287,          /* STRUCT_KEYWORD  */
+    SWAP = 288,                    /* SWAP  */
+    MALLOC = 289,                  /* MALLOC  */
+    FREE = 290,                    /* FREE  */
+    DANIBOY = 291,                 /* DANIBOY  */
+    LT = 292,                      /* LT  */
+    GT = 293,                      /* GT  */
+    LE = 294,                      /* LE  */
+    GE = 295,                      /* GE  */
+    EQ = 296,                      /* EQ  */
+    NE = 297,                      /* NE  */
+    AND = 298,                     /* AND  */
+    OR = 299,                      /* OR  */
+    NEGA = 300,                    /* NEGA  */
+    SUB = 301,                     /* SUB  */
+    MUL = 302,                     /* MUL  */
+    DIV = 303,                     /* DIV  */
+    MOD = 304,                     /* MOD  */
+    INCREMENT = 305,               /* INCREMENT  */
+    DECREMENT = 306,               /* DECREMENT  */
+    ADD_ASSIGN = 307,              /* ADD_ASSIGN  */
+    SUB_ASSIGN = 308,              /* SUB_ASSIGN  */
+    MUL_ASSIGN = 309,              /* MUL_ASSIGN  */
+    DIV_ASSIGN = 310,              /* DIV_ASSIGN  */
+    MOD_ASSIGN = 311,              /* MOD_ASSIGN  */
+    XOR = 312,                     /* XOR  */
+    LEFT_SHIFT = 313,              /* LEFT_SHIFT  */
+    RIGHT_SHIFT = 314,             /* RIGHT_SHIFT  */
+    QUEST = 315,                   /* QUEST  */
+    SEMI_COLON = 316,              /* SEMI_COLON  */
+    BLOCK_CLOSE = 317,             /* BLOCK_CLOSE  */
+    BLOCK_OPEN = 318,              /* BLOCK_OPEN  */
+    DOT = 319,                     /* DOT  */
+    ARROW = 320,                   /* ARROW  */
+    SUSTENIDO = 321,               /* SUSTENIDO  */
+    ASSIGN = 322,                  /* ASSIGN  */
+    ADD = 323,                     /* ADD  */
+    MINUS = 324,                   /* MINUS  */
+    INPUT = 325,                   /* INPUT  */
+    LITERAL_STRING = 326,          /* LITERAL_STRING  */
+    LITERAL_BOOL = 327,            /* LITERAL_BOOL  */
+    LITERAL_CHAR = 328,            /* LITERAL_CHAR  */
+    IDENTIFIER = 329,              /* IDENTIFIER  */
+    DIGITS = 330,                  /* DIGITS  */
+    DECIMAL = 331,                 /* DECIMAL  */
+    FUNCTION = 332,                /* FUNCTION  */
+    RELACIONAL_OPERATORS = 333,    /* RELACIONAL_OPERATORS  */
+    LOGIC_OPERATORS = 334,         /* LOGIC_OPERATORS  */
+    TYPE = 335                     /* TYPE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -145,11 +140,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "translate.y"
+#line 15 "translate.y"
 
-    char* superMario;
-    int marioKart;
-    double kong;
+    char* str;
+    int iValue;
+    double real;
     char mario;
     float donkey;
     bool zelda;
@@ -158,7 +153,7 @@ union YYSTYPE
     Type type;
     Function* funct;
 
-#line 162 "translate.tab.h"
+#line 157 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

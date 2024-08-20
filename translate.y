@@ -13,9 +13,9 @@ extern void yyerror(const char *);
 %}
 
 %union{
-    char* superMario;
-    int marioKart;
-    double kong;
+    char* str;
+    int iValue;
+    double real;
     char mario;
     float donkey;
     bool zelda;
@@ -25,31 +25,31 @@ extern void yyerror(const char *);
     Function* funct;
 }
 
-%token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT STRUCT TYPEDEF
-%token PRINT PRINTLN WHILE GOTO SCANF INT_MAIN READ_FILE CLOSE_FILE OPENING_MODE
-%token OPEN_KEY CLOSE_KEY OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET COMMA SEMICOLON COLON
-%token TIPO CALL ARQUIVO ENUM STRUCT_KEYWORD SWAP MALLOC FREE DANIBOY LT GT LE GE EQ NE AND OR NEGA
+%token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT TYPEDEF
+%token PRINT PRINTLN WHILE GOTO SCANF INT_MAIN READ_FILE CLOSE_FILE
+%token OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET COMMA SEMICOLON COLON
+%token FUNCTION_CALL ARQUIVO ENUM STRUCT_KEYWORD SWAP MALLOC FREE DANIBOY LT GT LE GE EQ NE AND OR NEGA
 %token SUB MUL DIV MOD INCREMENT DECREMENT ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN XOR LEFT_SHIFT
 %token RIGHT_SHIFT QUEST SEMI_COLON BLOCK_CLOSE BLOCK_OPEN DOT ARROW SUSTENIDO
 %token ASSIGN ADD MINUS INPUT
-%token <superMario> LITERAL_STRING
-%token <superMario> LITERAL_BOOL
+%token <str> LITERAL_STRING
+%token <str> LITERAL_BOOL
 %token <mario> LITERAL_CHAR
 %token <identifier> IDENTIFIER
-%token <marioKart> DIGITS
-%token <kong> DECIMAL
+%token <iValue> DIGITS
+%token <real> DECIMAL
 %token <funct> FUNCTION
-%token <superMario> RELACIONAL_OPERATORS
-%token <superMario> LOGIC_OPERATORS
-%token <superMario> TYPE
+%token <str> RELACIONAL_OPERATORS
+%token <str> LOGIC_OPERATORS
+%token <str> TYPE
 
 %type <type> type
 %type <identifier> var
 %type <type> expr
 %type <type> term
 %type <type> call_function
-%type <superMario> literal
-%type <superMario> real_parameters
+%type <str> literal
+%type <str> real_parameters
 %type <type> condition
 %type <type> stmts
 %type <type> increment_stmt  /* Adding type declaration for increment_stmt */
@@ -83,7 +83,7 @@ functions: function functions
          | 
          ;
 
-function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES OPEN_KEY stmts CLOSE_KEY
+function: FUNCTION IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE
         ;
 
 parameters: COMMA parameter parameters
@@ -123,7 +123,7 @@ file_stmt: file_open
          | file_close
          ;
 
-file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING COMMA OPENING_MODE CLOSE_PARENTHESES SEMICOLON
+file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING CLOSE_PARENTHESES SEMICOLON
          ;
 
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
@@ -146,7 +146,7 @@ assign_stmt: var ASSIGN expr SEMICOLON
 declaration: type IDENTIFIER SEMICOLON
            ;
 
-code_block: OPEN_KEY stmts CLOSE_KEY
+code_block: BLOCK_OPEN stmts BLOCK_CLOSE
           ;
 
 if_stmt: IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else_stmt
