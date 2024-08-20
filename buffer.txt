@@ -1,0 +1,6 @@
+**Arquivo de coisas que tirei do yacc**
+
+{bom_dia}             { return VOID_MAIN; } /* retirei pra facilitar no yacc */
+{boa_tarde}           { return INT_MAIN; }
+{logic_operator}      { yylval.str = strdup(yytext); return LOGIC_OPERATORS; }
+{relacional_op}       { yylval.str = strdup(yytext); return RELACIONAL_OPERATORS; }

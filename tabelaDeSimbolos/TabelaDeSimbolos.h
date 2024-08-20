@@ -12,17 +12,17 @@ typedef enum {
 typedef struct {
     char* name;
     Type type;
-} identifier;
+} Identificador;
 
 typedef struct {
-    identifier* id_list;
+    Identificador* id_list;
     int count;
-} identifiers;
+} Identificadores;
 
 typedef struct {
     char* name;
     Type returnType;
-    identifiers params;
+    Identificadores params;
 } Function;
 
 typedef enum {

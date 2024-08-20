@@ -3,14 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "tabelaDeSimbolos/TabelaDeSimbolos.h"
+//#include "tabelaDeSimbolos/TabelaDeSimbolos.h"
 
 
-void addId(char *id, Enumtypes type);
+//void addId(char *id, Enumtypes type);
 
 extern void yyerror(const char *);
 
 %}
+
+%code requires {
+     #include "tabelaDeSimbolos/TabelaDeSimbolos.h" 
+}
 
 %union{
     char* str;
@@ -19,9 +23,9 @@ extern void yyerror(const char *);
     char mario;
     float donkey;
     bool zelda;
-    identifier identifier;
-    identifiers identifiers;
-    Type type;
+    Identificador identifier;
+    Identificadores identifiers;
+    Tipo type;
     Function* funct;
 }
 
@@ -192,10 +196,27 @@ input_stmt: INPUT OPEN_PARENTHESES input_text CLOSE_PARENTHESES SEMICOLON
 input_text: var
           | input_text COMMA var
           ;
-
+/*
 condition: expr RELACIONAL_OPERATORS expr
          | expr LOGIC_OPERATORS expr
          ;
+*/
+
+condition: expr relacionals_op expr
+         | expr logical_op expr
+         ;
+
+relacionals_op: AND
+                |OR
+                ;
+
+logical_op: EQ
+            |NE
+            |GT
+            |GE
+            |LT
+            |LE
+            ;
 
 increment_stmt: var ADD ADD { $$ = $1.type; } /* Assigning var's type */
               | var MINUS MINUS { $$ = $1.type; } /* Assigning var's type */

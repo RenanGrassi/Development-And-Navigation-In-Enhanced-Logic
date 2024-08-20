@@ -59,14 +59,14 @@ daniboy            daniboy
 
 and                &&
 or                 ||
-logic_operator     {and}|{or}
+logic_operator     ({and}|{or})
 eq                 \=\=
 ne                 \!\=
 gt                 \>
 ge                 \>\=
 lt                 \<
 le                 \<\=
-relacional_op      {eq}|{ne}|{gt}|{ge}|{lt}|{le}
+relacional_op      ({eq}|{ne}|{gt}|{ge}|{lt}|{le})
 
 digit       [0-9]
 digits      {digit}+
@@ -84,12 +84,10 @@ decimal     [-]?{digit}+[.]{digit}+
 single_line_comment  "//[^\n]*"
 multi_line_comment   "/\([^]|\+[^/])\+/"
 
-%%
-{ws}+                 { /* Espaços em branco, tabulação e quebra de linha devem ser ignorados. */ }
 
-{decimal}             { yylval.real = atof(yytext); return DECIMAL; }
-{string}              { yylval.str = strdup(yytext); return STRING; }
-{identifier}          { yylval.str = strdup(yytext); return IDENTIFIER; }
+/*ver oq foi alterado do int main no git para voltar*/
+%%
+
 
 {type}                { return TYPE; }
 {fezALista}           { return IF; }
@@ -109,21 +107,24 @@ multi_line_comment   "/\([^]|\+[^/])\+/"
 {masNaoEObvio}        { return FUNCTION; }
 {masIssoEObvio}       { return FUNCTION_CALL; }
 {nintendo}            { return ARQUIVO; }
-{switch}              { return READ_FILE}
+{boa_tarde}           { return INT_MAIN; }
+{switch}           { return READ_FILE;}
 {wii}                 { return CLOSE_FILE; }
 {eOVisto}             { return ENUM; }
 {penseBem}            { return TYPEDEF; }
 {struct_keyword}      { return STRUCT_KEYWORD; }
-{pqEuPosso}           { return SWAP; }
+{pqEuPosso}           { return SWAP; }  
 {naoEMagico}          { return MALLOC; }
 {reuniao14h}          { return FREE; }
-{bom_dia}             { return VOID_MAIN; } /* retirei pra facilitar no yacc */
-{boa_tarde}           { return INT_MAIN; }
+
 {chamada}             { return RETURN; }
 {daniboy}             { return DANIBOY; }
-{logic_operator}      { yylval.str = strdup(yytext); return LOGIC_OPERATORS; }
-{relacional_op}       { yylval.str = strdup(yytext); return RELACIONAL_OPERATORS; }
 {digits}              { yylval.iValue = atoi(yytext); return DIGITS; }
+{ws}+                 { /* Espaços em branco, tabulação e quebra de linha devem ser ignorados. */ }
+
+{decimal}             { yylval.real = atof(yytext); return DECIMAL; }
+{string}              { yylval.str = strdup(yytext); return STRING; }
+{identifier}          { yylval.str = strdup(yytext); return IDENTIFIER; }
 
 
 {single_line_comment}    { /* Ignorar comentários de uma linha */ }
