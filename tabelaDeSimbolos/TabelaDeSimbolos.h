@@ -2,6 +2,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef enum {
+    INT,
+    FLOAT,
+    CHAR,
+    // Add other types as needed
+} Type;
+
+typedef struct {
+    char* name;
+    Type type;
+} identifier;
+
+typedef struct {
+    identifier* id_list;
+    int count;
+} identifiers;
+
+typedef struct {
+    char* name;
+    Type returnType;
+    identifiers params;
+} Function;
+
+typedef enum {
+    STMT,
+    NONE,
+    FUNCTION_CALL,
+    // Add other enums as needed
+} Enumtypes;
+
+
 typedef enum TipoDeDado{
     marioKart,
     zelda,

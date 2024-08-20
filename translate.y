@@ -1,11 +1,16 @@
 %{
-#include stdio.h
-#include stdlib.h
-#include string.h
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "tabelaDeSimbolos/TabelaDeSimbolos.h"
+
+
+void addId(char *id, Enumtypes type);
+
+extern void yyerror(const char *);
+
 %}
-
-
 
 %union{
     char* superMario;
@@ -46,12 +51,24 @@
 %type <superMario> literal
 %type <superMario> real_parameters
 %type <type> condition
-%type <type> increment
 %type <type> stmts
+%type <type> increment_stmt  /* Adding type declaration for increment_stmt */
 
 %start program
 
-
+%left COMMA
+%right ASSIGN ADD_ASSIGN DIV_ASSIGN MOD_ASSIGN MUL_ASSIGN SUB_ASSIGN
+%right QUEST COLON
+%left OR
+%left XOR
+%left AND
+%left EQ NE
+%left LT LE GE GT
+%left LEFT_SHIFT RIGHT_SHIFT
+%left ADD SUB
+%left MUL DIV MOD
+%right INCREMENT DECREMENT 
+%left OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET DOT
 
 %%
 
@@ -80,31 +97,31 @@ parameter: type IDENTIFIER
 main: INT_MAIN stmts
     ;
 
-stmts: stmt stmts { $$ = STMT }
+stmts: stmt stmts { $$ = STMT; }
      | /* empty */ { $$ = NONE; }
      ;
 
-stmt: if {addId(fezALista, palavraChave);}
-    | while {addId(eAGreve, palavraChave);}
-    | for
-    | switch
+stmt: if_stmt /*{addId(fezALista, palavraChave);}*/
+    | while_stmt /*{addId(eAGreve, palavraChave);}*/
+    | for_stmt
+    | switch_stmt
     | command
     ;
 
-command: return
-       | assign
-       | print
+command: return_stmt
+       | assign_stmt
+       | print_stmt
        | call_function
        | BREAK SEMICOLON
        | CONTINUE SEMICOLON
        | declaration
-       | input
-       | file
+       | input_stmt
+       | file_stmt
        ;
 
-file: file_open
-    | file_close
-    ;
+file_stmt: file_open
+         | file_close
+         ;
 
 file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING COMMA OPENING_MODE CLOSE_PARENTHESES SEMICOLON
          ;
@@ -119,12 +136,12 @@ real_parameters: expr { $$ = $1; }
                | real_parameters COMMA expr
                ;
 
-return: RETURN expr SEMICOLON
-      | RETURN SEMICOLON
-      ;
+return_stmt: RETURN expr SEMICOLON
+           | RETURN SEMICOLON
+           ;
 
-assign: var ASSIGN expr SEMICOLON
-      ;
+assign_stmt: var ASSIGN expr SEMICOLON
+           ;
 
 declaration: type IDENTIFIER SEMICOLON
            ;
@@ -132,34 +149,34 @@ declaration: type IDENTIFIER SEMICOLON
 code_block: OPEN_KEY stmts CLOSE_KEY
           ;
 
-if: IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else
+if_stmt: IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else_stmt
     ;
 
-else: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else
-    | ELSE COLON code_block
-    | 
-    ;
+else_stmt: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else_stmt
+          | ELSE COLON code_block
+          | 
+          ;
 
-while: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
-    ;
+while_stmt: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
+          ;
 
-for: FOR OPEN_PARENTHESES assign SEMICOLON condition SEMICOLON increment CLOSE_PARENTHESES COLON code_block
-   ;
+for_stmt: FOR OPEN_PARENTHESES assign_stmt SEMICOLON condition SEMICOLON increment_stmt CLOSE_PARENTHESES COLON code_block
+        ;
 
-switch: SWITCH OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON cases default
-      ;
+switch_stmt: SWITCH OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON cases default_case
+           ;
 
-cases: CASE expr COLON stmts cases
+cases: CASE expr COLON code_block cases
      | /* empty */
      ;
 
-default: DEFAULT COLON stmts
-        | /* empty */
-        ;
+default_case: DEFAULT COLON code_block
+            | /* empty */
+            ;
 
-print: PRINT OPEN_PARENTHESES print_texts CLOSE_PARENTHESES SEMICOLON
-     | PRINTLN OPEN_PARENTHESES print_texts CLOSE_PARENTHESES SEMICOLON
-     ;
+print_stmt: PRINT OPEN_PARENTHESES print_texts CLOSE_PARENTHESES SEMICOLON
+          | PRINTLN OPEN_PARENTHESES print_texts CLOSE_PARENTHESES SEMICOLON
+          ;
 
 print_texts: print_text
            | print_texts COMMA print_text
@@ -169,8 +186,8 @@ print_text: LITERAL_STRING
           | var
           ;
 
-input: INPUT OPEN_PARENTHESES input_text CLOSE_PARENTHESES SEMICOLON
-     ;
+input_stmt: INPUT OPEN_PARENTHESES input_text CLOSE_PARENTHESES SEMICOLON
+          ;
 
 input_text: var
           | input_text COMMA var
@@ -178,17 +195,15 @@ input_text: var
 
 condition: expr RELACIONAL_OPERATORS expr
          | expr LOGIC_OPERATORS expr
-         | /* empty */ { $$ = NONE; }
          ;
 
-increment: var ADD ADD { $$ = INCREMENT; }
-         | var MINUS MINUS { $$ = DECREMENT; }
-         | /* empty */ { $$ = NO_INCREMENT; }
-         ;
+increment_stmt: var ADD ADD { $$ = $1.type; } /* Assigning var's type */
+              | var MINUS MINUS { $$ = $1.type; } /* Assigning var's type */
+              ;
 
 expr: term
     | call_function
-    | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2; }
+    | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2.type; }
     ;
 
 term: DIGITS { $$ = INT; }
@@ -206,18 +221,19 @@ literal: LITERAL_CHAR { $$ = LITERAL_CHAR; }
         ;
 
 %%
-
+/*
 void addId(char *id, Enumtypes type) {
-    if(symbolTableFindInBlock(st, id)) {
+    if(buscaSimbolo(TabelaDeSimbolos,id)) {
         char msg[100];
         sprintf(msg, "Redeclaração do identificador \"%s\"", id);
         yyerror(msg);
-        onExit();
+        on_exit();
         exit(0);
     }
+    insereSimbolo(tabelaDeSimbolos, id, TipoDeDado tipoDado, *endereco, int linha, Tipo tipoSimbolo);
     symbolTableInsert(st, symbolNew(id, type, 1));
-    imprimeTabelaDeSimbolos(tabelaDeSimbolos);
-}
+    imprimeTabelaDeSimbolos(TabelaDeSimbolos);
+}*/
 
 int main(){
     TabelaDeSimbolos tabelaDeSimbolos;
