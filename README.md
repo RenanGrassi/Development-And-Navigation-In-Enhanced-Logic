@@ -12,22 +12,22 @@ Rodar os seguintes comandos no terminal
 ### Primeiro passo:
 "Compilar o yacc"
 
-bison -d testeYacc.y
+bison -d translate.y
 
 
 ### Segundo passo:
 "Compilar o lex"
 
-flex testeYacc.l
+flex lex.l
 
 
 ### Terceiro passo:
 Comando para executar o yacc junto com o lex
 
-gcc -o teste testeYacc.tab.c lex.yy.c -lfl
+gcc -o daniel translate.tab.c lex.yy.c -lfl
 
 
 ### Quarto passo:
 Para rodar o executavel igual acontece em C
 
-./teste
+./daniel
