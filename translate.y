@@ -9,6 +9,7 @@
 //void addId(char *id, Enumtypes type);
 
 extern void yyerror(const char *);
+int yylex(void); 
 
 %}
 
