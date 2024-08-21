@@ -30,4 +30,4 @@ gcc -o daniel translate.tab.c lex.yy.c -lfl
 ### Quarto passo:
 Para rodar o executavel igual acontece em C
 
-./daniel
+./daniel < teste.txt

@@ -10,6 +10,7 @@
 
 extern void yyerror(const char *);
 int yylex(void); 
+void executeProgram();
 
 FILE *prod;
 
@@ -84,8 +85,7 @@ type: TYPE { $$ = TYPE; }
     ;
 
 program: /* empty */
-       | functions main
-       | executeProgram();
+       | functions main {executeProgram();}
        ;
 
 functions: function functions
@@ -103,7 +103,7 @@ parameter: type IDENTIFIER
          | /*empty*/
          ;
 
-main: INT_MAIN stmts {fprintf(prod,"teste");}
+main: INT_MAIN stmts
     ;
 
 stmts: stmt stmts { $$ = TYPE; }
@@ -275,7 +275,6 @@ int main(){
 }
 
 void executeProgram() {
-    symbolTableShow(st, stdout);
     printf("Programa sintaticamente correto\n");
 }   
 
