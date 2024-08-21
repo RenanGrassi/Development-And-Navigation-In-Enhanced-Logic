@@ -24,7 +24,7 @@ flex lex.l
 ### Terceiro passo:
 Comando para executar o yacc junto com o lex
 
-gcc -o daniel translate.tab.c lex.yy.c -lfl
+gcc -o daniel translate.tab.c lex.yy.c TabelaDeSimbolos.c -lfl
 
 
 ### Quarto passo:
