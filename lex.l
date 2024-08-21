@@ -4,13 +4,13 @@
 #include "translate.tab.h"
 int line_number = 1; // Contador de linhas
 
-extern void yyerror(const char *);
-void executeProgram();
+extern int yylineno;
+void yyerror(const char *);
+/*void executeProgram();
 
-FILE *prod;
 
 TabelaDeSimbolos tabelaDeSimbolos;  
-void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);*/
 %}
 
 /* Direciona o flex a ler apenas um arquivo de entrada */ 
@@ -135,7 +135,7 @@ literal_char     {single_quot}.{single_quot}
 {chamada}             { return RETURN; }
 {daniboy}             { return DANIBOY; }
 {digits}              { yylval.iValue = atoi(yytext); return DIGITS; }
-{ws}+                 { /* Espaços em branco, tabulação e quebra de linha devem ser ignorados. */ }
+{ws}                  { line_number += (*yytext == '\n'); }
 
 {decimal}             { yylval.real = atof(yytext); return DECIMAL; }
 {string}              { yylval.str = strdup(yytext); return STRING; }

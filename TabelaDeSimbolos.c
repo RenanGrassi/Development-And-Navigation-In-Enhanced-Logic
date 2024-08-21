@@ -20,6 +20,8 @@ void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha) 
 }
 
 void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int endereco, int linha, Tipo tipoSimbolo) {
+
+    
     Simbolo *simbolo = (Simbolo *) malloc(sizeof(Simbolo));
     strcpy(simbolo->nome, nome);
     simbolo->tipoDado = tipoDado;

@@ -6,15 +6,16 @@
 #include "TabelaDeSimbolos.h"
 
 extern void yyerror(const char *);
-int yylex(void); 
+int yylex(void);  
 extern int line_number;
 void executeProgram();
 
-FILE *prod;
 
 TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
+//void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
+
 
 %}
 
@@ -87,7 +88,10 @@ type: TYPE { $$ = TYPE; }
     ;
 
 program: /* empty */
-       | functions main { executeProgram(); imprimeTabelaDeSimbolos(&tabelaDeSimbolos); }
+       | functions main { 
+       imprimeTabelaDeSimbolos(&tabelaDeSimbolos); 
+       executeProgram(); 
+}
        ;
 
 functions: function functions
@@ -101,7 +105,7 @@ parameters: COMMA parameter parameters
           | /*empty*/
           ;
 
-parameter: type IDENTIFIER { addId($2.name, variavel, $1, line_number); }
+parameter: type IDENTIFIER { addId($2.name, variavel, $1, line_number+1); }
          | /*empty*/
          ;
 
@@ -161,7 +165,7 @@ return_stmt: RETURN expr SEMICOLON
 assign_stmt: var ASSIGN expr SEMICOLON
            ;
 
-declaration: type IDENTIFIER SEMICOLON { addId($2.name, variavel, $1, line_number); }
+declaration: type IDENTIFIER SEMICOLON { addId($2.name, variavel, $1, line_number+1); }
            ;
 
 code_block: BLOCK_OPEN stmts BLOCK_CLOSE
@@ -258,6 +262,7 @@ literal: LITERAL_CHAR { $$ = CHAR; }
 %%
 
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha) {
+    printf("\n Chegou aqui \n");
     if (buscaSimbolo(&tabelaDeSimbolos, id)) {
         char msg[100];
         sprintf(msg, "Redeclaração do identificador \"%s\" na linha %d", id, linha);
@@ -269,18 +274,18 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha) {
 
 int main(){
     inicializaTabelaDeSimbolos(&tabelaDeSimbolos);
-    printf("Tabela iniciada");
+    printf("\nTabela iniciada\n");
     yyparse();
     return 0;
 }
 
 void executeProgram() {
-    printf("Programa sintaticamente correto\n");
+    printf("\nPrograma sintaticamente correto\n");
 }   
 
 void yyerror(const char *s) 
 {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Erro: %s próximo a linha %d\n", s, line_number+1);
 }
 
 int yywrap() 
