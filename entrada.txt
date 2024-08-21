@@ -1,0 +1,9 @@
+boatarde
+
+marioKart a;
+
+a=2;
+
+fezALista(a = 2){
+    veeeeja(a);
+}
