@@ -76,6 +76,13 @@ ge                 \>\=
 lt                 \<
 le                 \<\=
 relacional_op      ({eq}|{ne}|{gt}|{ge}|{lt}|{le})
+sum                 \+
+sub                 \-
+mult                \*
+div                 \/
+mod                 \%
+operation           {sum}|{sub}|{mult}|{div}|{mod}
+
 
 digit       [0-9]
 digits      {digit}+
@@ -86,6 +93,9 @@ pointer     [\*]
 string      \"([^\"]|\\\")*\" 
 identifier  (_|{letter})(_|{letter}|{digit})*
 
+
+assign      \=
+semicolon   \;
 
 decimal     [-]?{digit}+[.]{digit}+ 
 
@@ -148,6 +158,9 @@ literal_char     {single_quot}.{single_quot}
 {identifier}          { yylval.str = strdup(yytext); return IDENTIFIER; }
 {literal_string}      { yylval.str = strdup(yytext); return LITERAL_STRING; }
 {literal_char}        { yylval.caractere =  yytext[0]; return LITERAL_CHAR; }
+{assign}              { return ASSIGN; }
+{semicolon}           { return SEMICOLON; }
+{operation}           { yylval.str = strdup(yytext); return OPERATION; }
 
 
 {single_line_comment}    { /* Ignorar comentários de uma linha */ }
@@ -163,14 +176,8 @@ literal_char     {single_quot}.{single_quot}
 "&&"                 { return AND; }
 "||"                 { return OR; }
 "!"                  { return NEGA; }
-"\\+"                { return ADD; }
-"\\-"                { return SUB; }
-"\\*"                { return MUL; }
-"/"                  { return DIV; }
-"%"                  { return MOD; }
 "\\+\\+"             { return INCREMENT; }
 "--"                 { return DECREMENT; }
-"="                  { return ASSIGN; }
 "\\+="               { return ADD_ASSIGN; }
 "\\-="               { return SUB_ASSIGN; }
 "\\*="               { return MUL_ASSIGN; }
