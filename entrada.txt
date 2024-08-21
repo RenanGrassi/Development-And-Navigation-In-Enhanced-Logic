@@ -1,9 +1,12 @@
 boatarde
 
 marioKart a;
+donkey b;
+kong c;
+mario d;
+superMario e;
+zelda f;
 
 a=2;
 
-fezALista(a = 2){
-    veeeeja(a);
-}
+chamada;

@@ -30,7 +30,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
     char caractere;
     Identificador identifier;
     Identificadores identifiers;
-    Tipo type;
+    TipoDeDado type;
     RealParameters types;
     Function* funct;
 }
@@ -52,6 +52,13 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 %token <str> RELACIONAL_OPERATORS
 %token <str> LOGIC_OPERATORS
 %token <str> TYPE
+%token <str> TYPE_INT
+%token <str> TYPE_FLOAT
+%token <str> TYPE_DOUBLE
+%token <str> TYPE_CHAR
+%token <str> TYPE_STRING
+%token <str> TYPE_BOOLEAN
+
 
 %type <type> type
 %type <identifier> var
@@ -84,7 +91,12 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 
 %%
 
-type: TYPE { $$ = TYPE; }
+type: TYPE_INT { $$ = marioKart; }
+        | TYPE_FLOAT { $$ = donkey; }
+        | TYPE_DOUBLE { $$ = kong; }
+        | TYPE_CHAR { $$ = mario; }
+        | TYPE_STRING { $$ = superMario; }
+        | TYPE_BOOLEAN { $$ = zelda; }
     ;
 
 program: /* empty */
@@ -98,7 +110,7 @@ functions: function functions
          | 
          ;
 
-function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE
+function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE 
         ;
 
 parameters: COMMA parameter parameters
@@ -269,7 +281,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha) {
         yyerror(msg);
         exit(1);
     }
-    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, 0, linha, tipoSimbolo);
+    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, linha, tipoSimbolo);
 }
 
 int main(){

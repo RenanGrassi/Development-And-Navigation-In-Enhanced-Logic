@@ -132,7 +132,13 @@ extern int yydebug;
     FUNCT = 332,
     RELACIONAL_OPERATORS = 333,
     LOGIC_OPERATORS = 334,
-    TYPE = 335
+    TYPE = 335,
+    TYPE_INT = 336,
+    TYPE_FLOAT = 337,
+    TYPE_DOUBLE = 338,
+    TYPE_CHAR = 339,
+    TYPE_STRING = 340,
+    TYPE_BOOLEAN = 341
   };
 #endif
 
@@ -148,11 +154,11 @@ union YYSTYPE
     char caractere;
     Identificador identifier;
     Identificadores identifiers;
-    Tipo type;
+    TipoDeDado type;
     RealParameters types;
     Function* funct;
 
-#line 156 "translate.tab.h"
+#line 162 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

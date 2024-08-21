@@ -104,7 +104,13 @@ literal_char     {single_quot}.{single_quot}
 %%
 
 
-{type}                { return TYPE; }
+{marioKart}          { return TYPE_INT; }
+{donkey}             { return TYPE_FLOAT; }
+{kong}               { return TYPE_DOUBLE; }
+{mario}              { return TYPE_CHAR; }
+{superMario}         { return TYPE_STRING; }
+{zelda}              { return TYPE_BOOLEAN; }
+
 {fezALista}           { return IF; }
 {nao}                 { return ELSE; }
 {naoFez}              { return ELIF; }
@@ -157,20 +163,20 @@ literal_char     {single_quot}.{single_quot}
 "&&"                 { return AND; }
 "||"                 { return OR; }
 "!"                  { return NEGA; }
-"+"                  { return ADD; }
-"-"                  { return SUB; }
-"*"                  { return MUL; }
+"\\+"                { return ADD; }
+"\\-"                { return SUB; }
+"\\*"                { return MUL; }
 "/"                  { return DIV; }
 "%"                  { return MOD; }
-"++"                 { return INCREMENT; }
+"\\+\\+"             { return INCREMENT; }
 "--"                 { return DECREMENT; }
 "="                  { return ASSIGN; }
-"+="                 { return ADD_ASSIGN; }
-"-="                 { return SUB_ASSIGN; }
-"*="                 { return MUL_ASSIGN; }
+"\\+="               { return ADD_ASSIGN; }
+"\\-="               { return SUB_ASSIGN; }
+"\\*="               { return MUL_ASSIGN; }
 "/="                 { return DIV_ASSIGN; }
 "%="                 { return MOD_ASSIGN; }
-"^"                  { return XOR; }
+"\\^"                { return XOR; }
 "<<"                 { return LEFT_SHIFT; }
 ">>"                 { return RIGHT_SHIFT; }
 "?"                  { return QUEST; }
@@ -183,7 +189,7 @@ literal_char     {single_quot}.{single_quot}
 "["                  { return OPEN_BRACKET; }
 "}"                  { return BLOCK_CLOSE; }
 "{"                  { return BLOCK_OPEN; }
-"."                  { return DOT; }
+"\\."                { return DOT; }
 "->"                 { return ARROW; }
 "#"                  { return SUSTENIDO; }
 
