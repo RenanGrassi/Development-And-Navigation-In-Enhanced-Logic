@@ -13,7 +13,6 @@ typedef enum {
     STRING,
     FUNCTION,
     NONE,
-    // Add other types as needed
 } Type;
 
 typedef struct 
@@ -41,9 +40,7 @@ typedef struct {
 
 typedef enum {
     STMT,
-    // Add other enums as needed
 } Enumtypes;
-
 
 typedef enum TipoDeDado{
     marioKart,
@@ -76,7 +73,7 @@ typedef struct TabelaDeSimbolos {
 } TabelaDeSimbolos;
 
 void inicializaTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
-void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int endereco, int linha, Tipo tipoSimbolo);
+void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int linha, Tipo tipoSimbolo);
 Simbolo *buscaSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 void removeSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);

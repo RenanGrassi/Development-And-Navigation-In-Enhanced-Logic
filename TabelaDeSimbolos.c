@@ -19,13 +19,10 @@ void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha) 
     }
 }
 
-void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int endereco, int linha, Tipo tipoSimbolo) {
-
-    
+void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int linha, Tipo tipoSimbolo) {
     Simbolo *simbolo = (Simbolo *) malloc(sizeof(Simbolo));
     strcpy(simbolo->nome, nome);
     simbolo->tipoDado = tipoDado;
-    simbolo->endereco = endereco;
     simbolo->linha = linha;
     simbolo->tipoSimbolo = tipoSimbolo;
     simbolo->proximo = NULL;
@@ -68,14 +65,35 @@ void removeSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome) {
     }
 }
 
+const char* getTipoDeDadoNome(TipoDeDado tipo) {
+    switch (tipo) {
+        case marioKart: return "marioKart";
+        case zelda: return "zelda";
+        case superMario: return "superMario";
+        case donkey: return "donkey";
+        case kong: return "kong";
+        case mario: return "mario";
+        default: return "Desconhecido";
+    }
+}
+
+const char* getTipoNome(TipoDeDado tipo) {
+    switch (tipo) {
+        case funcao: return "Função";
+        case variavel: return "Variável";
+        case constante: return "Constante";
+        case palavraChave: return "Palavra-chave";
+        default: return "Desconhecido";
+    }
+}
+
 void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
     Simbolo *simbolo = tabelaDeSimbolos->primeiro;
     while (simbolo != NULL) {
         printf("Nome: %s\n", simbolo->nome);
-        printf("Tipo de dado: %d\n", simbolo->tipoDado);
-        printf("Endereco: %d\n", simbolo->endereco);
+        printf("Tipo de dado: %s\n", getTipoDeDadoNome(simbolo->tipoDado));
         printf("Linha: %d\n", simbolo->linha);
-        printf("Tipo de simbolo: %d\n", simbolo->tipoSimbolo);
+        printf("Tipo de simbolo: %s\n", getTipoNome(simbolo->tipoSimbolo));
         printf("\n");
         simbolo = simbolo->proximo;
     }
