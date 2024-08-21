@@ -50,6 +50,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 %token <real> DECIMAL
 %token <funct> FUNCT
 %token <str> RELACIONAL_OPERATORS
+%token <str> OPERATION
 %token <str> LOGIC_OPERATORS
 %token <str> TYPE
 %token <str> TYPE_INT
@@ -71,8 +72,6 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 %type <type> real_parameter
 %type <type> condition
 %type <type> stmts
-%type <type> increment_stmt  /* Adding type declaration for increment_stmt */
-
 %start program
 
 %left COMMA
@@ -86,6 +85,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 %left LEFT_SHIFT RIGHT_SHIFT
 %left ADD SUB
 %left MUL DIV MOD
+%left OPERATION
 %right INCREMENT DECREMENT 
 %left OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET DOT
 
@@ -138,7 +138,7 @@ stmt: if_stmt /*{addId(fezALista, palavraChave);}*/
 command: return_stmt
        | assign_stmt
        | print_stmt
-       | call_function SEMI_COLON
+       | call_function SEMICOLON
        | BREAK SEMICOLON
        | CONTINUE SEMICOLON
        | declaration
@@ -156,7 +156,7 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING CLOSE_PARENTHESES SEMI
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
 
-call_function: FUNCTION_CALL OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION; }
+call_function: FUNCTION_CALL IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION; }
              ;
 
 real_parameters: real_parameter real_parameters2 
@@ -193,8 +193,7 @@ else_stmt: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block el
 
 while_stmt: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
           ;
-
-for_stmt: FOR OPEN_PARENTHESES assign_stmt SEMICOLON condition SEMICOLON increment_stmt CLOSE_PARENTHESES COLON code_block
+for_stmt: FOR OPEN_PARENTHESES assign_stmt SEMICOLON condition SEMICOLON CLOSE_PARENTHESES COLON code_block
         ;
 
 switch_stmt: SWITCH OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON cases default_case
@@ -248,13 +247,10 @@ logical_op: EQ
             |LE
             ;
 
-increment_stmt: var ADD ADD { $$ = $1.type; } /* Assigning var's type */
-              | var MINUS MINUS { $$ = $1.type; } /* Assigning var's type */
-              ;
-
 expr: term { $$ = $1; }
     | call_function { $$ = $1; }
     | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2; }
+    | expr OPERATION expr
     ;
 
 term: DIGITS { $$ = INT; }
@@ -274,7 +270,6 @@ literal: LITERAL_CHAR { $$ = CHAR; }
 %%
 
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha) {
-    printf("\n Chegou aqui \n");
     if (buscaSimbolo(&tabelaDeSimbolos, id)) {
         char msg[100];
         sprintf(msg, "Redeclaração do identificador \"%s\" na linha %d", id, linha);

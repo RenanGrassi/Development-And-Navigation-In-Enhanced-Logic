@@ -134,8 +134,8 @@ literal_char     {single_quot}.{single_quot}
 {marcos}              { return DEFAULT; }
 {veeeeja}             { return PRINT; }
 {vejaBem}             { return PRINTLN; }
-{diga}                { return SCANF; }
-{masNaoEObvio}        { return FUNCTION; }
+{diga}                { return INPUT; }
+{masNaoEObvio}        { return FUNCT; }
 {masIssoEObvio}       { return FUNCTION_CALL; }
 {nintendo}            { return ARQUIVO; }
 {boa_tarde}           { return INT_MAIN; }
@@ -189,7 +189,6 @@ literal_char     {single_quot}.{single_quot}
 "?"                  { return QUEST; }
 ":"                  { return COLON; }
 ","                  { return COMMA; }
-";"                  { return SEMICOLON; }
 ")"                  { return CLOSE_PARENTHESES; }
 "("                  { return OPEN_PARENTHESES; }
 "]"                  { return CLOSE_BRACKET; }

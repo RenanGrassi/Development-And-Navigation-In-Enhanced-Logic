@@ -1,12 +1,52 @@
-boatarde
+masNaoEObvio teste(zelda f){
+    f=2;
+}
 
-marioKart a;
-donkey b;
-kong c;
-mario d;
-superMario e;
-zelda f;
+
+boatarde
+masIssoEObvio teste(f);;
+
+zelda a;
 
 a=2;
 
-chamada;
+z = a + b;
+z = a - b;
+
+fezALista(a>b):{
+    zelda b;
+} naoFez (b>a):{
+    marioKart c;
+}nao:{
+    donkey d;
+}
+
+eAGreve(c!=d):{
+    d=4;
+    momentoOportuno;
+}
+
+adiaarOTP(a=2;;a>=d;):{
+    kong e;
+}
+
+temosUmImpasse(a):
+chwazi b:{
+    momentoOportuno;
+}chwazi 2:{
+    e = 2;
+}marcos:{
+    chamada e;
+}
+
+momentoOportuno;
+
+muitoBem;
+
+diga(a);
+
+veeeeja(a,b);
+
+vejaBem(a,b);
+
+chamada 'a';
