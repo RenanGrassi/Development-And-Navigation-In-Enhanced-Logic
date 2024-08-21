@@ -3,21 +3,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include "tabelaDeSimbolos/TabelaDeSimbolos.h"
-
-
-//void addId(char *id, Enumtypes type);
+#include "TabelaDeSimbolos.h"
 
 extern void yyerror(const char *);
 int yylex(void); 
+extern int line_number;
 void executeProgram();
 
 FILE *prod;
 
+TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
+
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
+
 %}
 
 %code requires {
-     #include "tabelaDeSimbolos/TabelaDeSimbolos.h" 
+    #include "TabelaDeSimbolos.h" 
 }
 
 %union{
@@ -85,7 +87,7 @@ type: TYPE { $$ = TYPE; }
     ;
 
 program: /* empty */
-       | functions main {executeProgram();}
+       | functions main { executeProgram(); imprimeTabelaDeSimbolos(&tabelaDeSimbolos); }
        ;
 
 functions: function functions
@@ -99,7 +101,7 @@ parameters: COMMA parameter parameters
           | /*empty*/
           ;
 
-parameter: type IDENTIFIER
+parameter: type IDENTIFIER { addId($2.name, variavel, $1, line_number); }
          | /*empty*/
          ;
 
@@ -159,7 +161,7 @@ return_stmt: RETURN expr SEMICOLON
 assign_stmt: var ASSIGN expr SEMICOLON
            ;
 
-declaration: type IDENTIFIER SEMICOLON
+declaration: type IDENTIFIER SEMICOLON { addId($2.name, variavel, $1, line_number); }
            ;
 
 code_block: BLOCK_OPEN stmts BLOCK_CLOSE
@@ -208,7 +210,7 @@ input_stmt: INPUT OPEN_PARENTHESES input_text CLOSE_PARENTHESES SEMICOLON
 input_text: var
           | input_text COMMA var
           ;
-/*
+/* 
 condition: expr RELACIONAL_OPERATORS expr
          | expr LOGIC_OPERATORS expr
          ;
@@ -254,23 +256,21 @@ literal: LITERAL_CHAR { $$ = CHAR; }
         ;
 
 %%
-/*
-void addId(char *id, Enumtypes type) {
-    if(buscaSimbolo(TabelaDeSimbolos,id)) {
+
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha) {
+    if (buscaSimbolo(&tabelaDeSimbolos, id)) {
         char msg[100];
-        sprintf(msg, "Redeclaração do identificador \"%s\"", id);
+        sprintf(msg, "Redeclaração do identificador \"%s\" na linha %d", id, linha);
         yyerror(msg);
-        on_exit();
-        exit(0);
+        exit(1);
     }
-    insereSimbolo(tabelaDeSimbolos, id, TipoDeDado tipoDado, *endereco, int linha, Tipo tipoSimbolo);
-    symbolTableInsert(st, symbolNew(id, type, 1));
-    imprimeTabelaDeSimbolos(TabelaDeSimbolos);
-}*/
+    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, 0, linha, tipoSimbolo);
+}
 
 int main(){
+    inicializaTabelaDeSimbolos(&tabelaDeSimbolos);
+    printf("Tabela iniciada");
     yyparse();
-    TabelaDeSimbolos tabelaDeSimbolos;
     return 0;
 }
 
@@ -278,12 +278,12 @@ void executeProgram() {
     printf("Programa sintaticamente correto\n");
 }   
 
-void yyerror(const char *s)
+void yyerror(const char *s) 
 {
     fprintf(stderr, "Error: %s\n", s);
 }
 
-int yywrap()
+int yywrap() 
 {
     return 1;
 }

@@ -12,7 +12,7 @@ void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha) 
     Simbolo *simbolo = tabelaDeSimbolos->primeiro;
     while (simbolo != NULL) {
         if (strcmp(simbolo->nome, nome) == 0) {
-            printf("Erro: simbolo %s ja foi declarado\n", linha, nome); //ver se vai precisar de um print aq 
+            printf("Erro linha %d: simbolo %s ja foi declarado\n", linha, nome); //ver se vai precisar de um print aq 
             exit(1);
         }
         simbolo = simbolo->proximo;

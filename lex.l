@@ -1,9 +1,18 @@
-%{ 
-    #include <stdio.h>
-    #include <string.h>
-    #include "translate.tab.h"
-    int line_number = 1; // Contador de linhas
-%} 
+%{
+#include <stdio.h>
+#include <string.h>
+#include "translate.tab.h"
+int line_number = 1; // Contador de linhas
+
+extern void yyerror(const char *);
+void executeProgram();
+
+FILE *prod;
+
+TabelaDeSimbolos tabelaDeSimbolos;  
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
+%}
+
 /* Direciona o flex a ler apenas um arquivo de entrada */ 
 %option noyywrap 
 

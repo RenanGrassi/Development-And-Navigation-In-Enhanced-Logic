@@ -1,3 +1,6 @@
+#ifndef TABELADESIMBOLOS_H
+#define TABELADESIMBOLOS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,3 +81,5 @@ Simbolo *buscaSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 void removeSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha);
+
+#endif // TABELADESIMBOLOS_H

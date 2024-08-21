@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.8.2.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,9 +31,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
-   especially those whose name start with YY_ or yy_.  They are
-   private implementation details that can be changed or removed.  */
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
 
 #ifndef YY_YY_TRANSLATE_TAB_H_INCLUDED
 # define YY_YY_TRANSLATE_TAB_H_INCLUDED
@@ -45,108 +44,103 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 15 "translate.y"
+#line 21 "translate.y"
 
-     #include "tabelaDeSimbolos/TabelaDeSimbolos.h" 
+    #include "TabelaDeSimbolos.h" 
 
-#line 53 "translate.tab.h"
+#line 52 "translate.tab.h"
 
-/* Token kinds.  */
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    IF = 258,                      /* IF  */
-    ELSE = 259,                    /* ELSE  */
-    ELIF = 260,                    /* ELIF  */
-    FOR = 261,                     /* FOR  */
-    RETURN = 262,                  /* RETURN  */
-    CONTINUE = 263,                /* CONTINUE  */
-    BREAK = 264,                   /* BREAK  */
-    SWITCH = 265,                  /* SWITCH  */
-    CASE = 266,                    /* CASE  */
-    DEFAULT = 267,                 /* DEFAULT  */
-    TYPEDEF = 268,                 /* TYPEDEF  */
-    PRINT = 269,                   /* PRINT  */
-    PRINTLN = 270,                 /* PRINTLN  */
-    WHILE = 271,                   /* WHILE  */
-    GOTO = 272,                    /* GOTO  */
-    SCANF = 273,                   /* SCANF  */
-    INT_MAIN = 274,                /* INT_MAIN  */
-    READ_FILE = 275,               /* READ_FILE  */
-    CLOSE_FILE = 276,              /* CLOSE_FILE  */
-    OPEN_PARENTHESES = 277,        /* OPEN_PARENTHESES  */
-    CLOSE_PARENTHESES = 278,       /* CLOSE_PARENTHESES  */
-    OPEN_BRACKET = 279,            /* OPEN_BRACKET  */
-    CLOSE_BRACKET = 280,           /* CLOSE_BRACKET  */
-    COMMA = 281,                   /* COMMA  */
-    SEMICOLON = 282,               /* SEMICOLON  */
-    COLON = 283,                   /* COLON  */
-    FUNCTION_CALL = 284,           /* FUNCTION_CALL  */
-    ARQUIVO = 285,                 /* ARQUIVO  */
-    ENUM = 286,                    /* ENUM  */
-    STRUCT_KEYWORD = 287,          /* STRUCT_KEYWORD  */
-    SWAP = 288,                    /* SWAP  */
-    MALLOC = 289,                  /* MALLOC  */
-    FREE = 290,                    /* FREE  */
-    DANIBOY = 291,                 /* DANIBOY  */
-    LT = 292,                      /* LT  */
-    GT = 293,                      /* GT  */
-    LE = 294,                      /* LE  */
-    GE = 295,                      /* GE  */
-    EQ = 296,                      /* EQ  */
-    NE = 297,                      /* NE  */
-    AND = 298,                     /* AND  */
-    OR = 299,                      /* OR  */
-    NEGA = 300,                    /* NEGA  */
-    SUB = 301,                     /* SUB  */
-    MUL = 302,                     /* MUL  */
-    DIV = 303,                     /* DIV  */
-    MOD = 304,                     /* MOD  */
-    INCREMENT = 305,               /* INCREMENT  */
-    DECREMENT = 306,               /* DECREMENT  */
-    ADD_ASSIGN = 307,              /* ADD_ASSIGN  */
-    SUB_ASSIGN = 308,              /* SUB_ASSIGN  */
-    MUL_ASSIGN = 309,              /* MUL_ASSIGN  */
-    DIV_ASSIGN = 310,              /* DIV_ASSIGN  */
-    MOD_ASSIGN = 311,              /* MOD_ASSIGN  */
-    XOR = 312,                     /* XOR  */
-    LEFT_SHIFT = 313,              /* LEFT_SHIFT  */
-    RIGHT_SHIFT = 314,             /* RIGHT_SHIFT  */
-    QUEST = 315,                   /* QUEST  */
-    SEMI_COLON = 316,              /* SEMI_COLON  */
-    BLOCK_CLOSE = 317,             /* BLOCK_CLOSE  */
-    BLOCK_OPEN = 318,              /* BLOCK_OPEN  */
-    DOT = 319,                     /* DOT  */
-    ARROW = 320,                   /* ARROW  */
-    SUSTENIDO = 321,               /* SUSTENIDO  */
-    ASSIGN = 322,                  /* ASSIGN  */
-    ADD = 323,                     /* ADD  */
-    MINUS = 324,                   /* MINUS  */
-    INPUT = 325,                   /* INPUT  */
-    LITERAL_STRING = 326,          /* LITERAL_STRING  */
-    LITERAL_BOOL = 327,            /* LITERAL_BOOL  */
-    LITERAL_CHAR = 328,            /* LITERAL_CHAR  */
-    IDENTIFIER = 329,              /* IDENTIFIER  */
-    DIGITS = 330,                  /* DIGITS  */
-    DECIMAL = 331,                 /* DECIMAL  */
-    FUNCT = 332,                   /* FUNCT  */
-    RELACIONAL_OPERATORS = 333,    /* RELACIONAL_OPERATORS  */
-    LOGIC_OPERATORS = 334,         /* LOGIC_OPERATORS  */
-    TYPE = 335                     /* TYPE  */
+    IF = 258,
+    ELSE = 259,
+    ELIF = 260,
+    FOR = 261,
+    RETURN = 262,
+    CONTINUE = 263,
+    BREAK = 264,
+    SWITCH = 265,
+    CASE = 266,
+    DEFAULT = 267,
+    TYPEDEF = 268,
+    PRINT = 269,
+    PRINTLN = 270,
+    WHILE = 271,
+    GOTO = 272,
+    SCANF = 273,
+    INT_MAIN = 274,
+    READ_FILE = 275,
+    CLOSE_FILE = 276,
+    OPEN_PARENTHESES = 277,
+    CLOSE_PARENTHESES = 278,
+    OPEN_BRACKET = 279,
+    CLOSE_BRACKET = 280,
+    COMMA = 281,
+    SEMICOLON = 282,
+    COLON = 283,
+    FUNCTION_CALL = 284,
+    ARQUIVO = 285,
+    ENUM = 286,
+    STRUCT_KEYWORD = 287,
+    SWAP = 288,
+    MALLOC = 289,
+    FREE = 290,
+    DANIBOY = 291,
+    LT = 292,
+    GT = 293,
+    LE = 294,
+    GE = 295,
+    EQ = 296,
+    NE = 297,
+    AND = 298,
+    OR = 299,
+    NEGA = 300,
+    SUB = 301,
+    MUL = 302,
+    DIV = 303,
+    MOD = 304,
+    INCREMENT = 305,
+    DECREMENT = 306,
+    ADD_ASSIGN = 307,
+    SUB_ASSIGN = 308,
+    MUL_ASSIGN = 309,
+    DIV_ASSIGN = 310,
+    MOD_ASSIGN = 311,
+    XOR = 312,
+    LEFT_SHIFT = 313,
+    RIGHT_SHIFT = 314,
+    QUEST = 315,
+    SEMI_COLON = 316,
+    BLOCK_CLOSE = 317,
+    BLOCK_OPEN = 318,
+    DOT = 319,
+    ARROW = 320,
+    SUSTENIDO = 321,
+    ASSIGN = 322,
+    ADD = 323,
+    MINUS = 324,
+    INPUT = 325,
+    LITERAL_STRING = 326,
+    LITERAL_BOOL = 327,
+    LITERAL_CHAR = 328,
+    IDENTIFIER = 329,
+    DIGITS = 330,
+    DECIMAL = 331,
+    FUNCT = 332,
+    RELACIONAL_OPERATORS = 333,
+    LOGIC_OPERATORS = 334,
+    TYPE = 335
   };
-  typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 19 "translate.y"
+#line 25 "translate.y"
 
     char* str;
     int iValue;
@@ -158,7 +152,7 @@ union YYSTYPE
     RealParameters types;
     Function* funct;
 
-#line 162 "translate.tab.h"
+#line 156 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -169,8 +163,6 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-
 int yyparse (void);
-
 
 #endif /* !YY_YY_TRANSLATE_TAB_H_INCLUDED  */
