@@ -6,11 +6,6 @@ int line_number = 1; // Contador de linhas
 
 extern int yylineno;
 void yyerror(const char *);
-/*void executeProgram();
-
-
-TabelaDeSimbolos tabelaDeSimbolos;  
-void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);*/
 %}
 
 /* Direciona o flex a ler apenas um arquivo de entrada */ 
@@ -59,10 +54,7 @@ wii                wii
 bom_dia            bomdia
 boa_tarde          boatarde
 
-
 chamada            chamada
-
-
 daniboy            daniboy
 
 

@@ -1,0 +1,14 @@
+masNaoEObvio funcao(kong palavra){
+    palavra = 2;
+}
+
+boatarde
+
+marioKart variavel = 1;
+
+masIssoEObvio funcao(f);
+
+veeeeja(variavel,f);
+
+chamada 'variavel';
+

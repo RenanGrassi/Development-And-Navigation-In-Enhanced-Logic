@@ -1,0 +1,29 @@
+boatarde
+
+mario variavel;
+zelda espada;
+espada = 0;
+
+temosUmImpasse(espada):
+chwazi bijas:{
+    veeeeja(variavel,constante);
+
+}chwazi 2:{
+    espada = 2;
+    adiaarOTP(lespada=2;;variavel>=50;):{
+        kong pokemon;
+    }
+
+}chwazi 3:{
+    pokemon = 10;
+    vejaBem(variavel,pokemon);
+
+}chwazi 4:{
+    variavel = 2;
+    veeeeja(variavel,bijas);
+
+}marcos:{
+    chamada pokemon;
+}
+momentoOportuno;
+

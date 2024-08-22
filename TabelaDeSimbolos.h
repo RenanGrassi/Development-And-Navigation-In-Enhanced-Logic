@@ -61,7 +61,6 @@ typedef enum Tipo {
 typedef struct Simbolo {
     char nome[50];
     TipoDeDado tipoDado;
-    int endereco;
     struct Simbolo *proximo;
     int linha;
     Tipo tipoSimbolo;

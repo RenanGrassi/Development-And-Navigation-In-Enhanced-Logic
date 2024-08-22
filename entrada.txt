@@ -1,52 +1,51 @@
-masNaoEObvio teste(zelda f){
-    f=2;
+masNaoEObvio funcao(kong palavra){
+    palavra = 2;
 }
-
 
 boatarde
 masIssoEObvio teste(f);;
 
-zelda a;
+zelda link;
 
-a=2;
+link = 2;
 
-z = a + b;
-z = a - b;
+jota = link + bijas;
+jota = link - bijas;
 
-fezALista(a>b):{
-    zelda b;
-} naoFez (b>a):{
-    marioKart c;
+fezALista(link > bijas):{
+    zelda bijas;
+} naoFez (bijas > link):{
+    marioKart chiclete;
 }nao:{
-    donkey d;
+    donkey garrafa;
 }
 
-eAGreve(c!=d):{
-    d=4;
+eAGreve(c!=garrafa):{
+    garrafa=4;
     momentoOportuno;
 }
 
-adiaarOTP(a=2;;a>=d;):{
-    kong e;
+adiaarOTP(link=2;;link>=garrafa;):{
+    kong pokemon;
 }
 
-temosUmImpasse(a):
-chwazi b:{
+temosUmImpasse(link):
+chwazi bijas:{
     momentoOportuno;
 }chwazi 2:{
-    e = 2;
+    pokemon = 2;
 }marcos:{
-    chamada e;
+    chamada pokemon;
 }
 
 momentoOportuno;
 
 muitoBem;
 
-diga(a);
+diga(link);
 
-veeeeja(a,b);
+veeeeja(link,bijas);
 
-vejaBem(a,b);
+vejaBem(link,bijas);
 
-chamada 'a';
+chamada 'link';
