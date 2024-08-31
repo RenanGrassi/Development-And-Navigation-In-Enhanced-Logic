@@ -88,6 +88,8 @@ const char* getTipoNome(TipoDeDado tipo) {
 }
 
 void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
+
+
     Simbolo *simbolo = tabelaDeSimbolos->primeiro;
     while (simbolo != NULL) {
         printf("Nome: %s\n", simbolo->nome);
@@ -97,4 +99,52 @@ void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
         printf("\n");
         simbolo = simbolo->proximo;
     }
+}
+
+
+Type semantica_relop(Type type1, Type type2, char op){
+    Type resultado = ERRO;
+    if (type1 == INT && type2 == INT){
+        resultado = BOOLEAN;
+    }
+    else if (type1 == FLOAT && type2 == FLOAT){
+        resultado = BOOLEAN;
+    }
+    else if (type1 == type2 && op == '='){
+        resultado = BOOLEAN;
+    }
+
+
+    return resultado;
+}
+
+Type semantica_op(Type type1, Type type2, char op){
+    Type resultado = ERRO;
+    if (type1 == INT && type2 == INT){
+        resultado = INT;
+    }
+    if (type1 == FLOAT && type2 == FLOAT){
+        resultado = FLOAT;
+    }
+    if (type1 == STRING && type2 == STRING && op == '+'){
+        resultado = STRING;
+    }
+
+    return resultado;
+}
+
+Type semantica_logic(Type type1, Type type2){
+    Type resultado = ERRO;
+    if (type1 == BOOLEAN && type2 == BOOLEAN){
+        resultado = BOOLEAN;
+    }
+    return resultado;
+}
+
+Type semantica_ternary(Type type1, Type type2){
+    Type resultado = ERRO;
+    if (type1 == type2){
+        resultado = type1;
+    }
+    return resultado;
 }

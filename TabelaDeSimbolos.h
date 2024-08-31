@@ -12,6 +12,7 @@ typedef enum {
     BOOLEAN,
     STRING,
     FUNCTION,
+    ERRO,
     NONE,
 } Type;
 
@@ -77,5 +78,12 @@ Simbolo *buscaSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 void removeSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha);
+Type semantica_relop(Type type1, Type type2, char op);
+Type semantica_op(Type type1, Type type2, char op);
+Type semantica_logic(Type type1, Type type2);
+Type semantica_ternary(Type type1, Type type2);
+
+
+
 
 #endif // TABELADESIMBOLOS_H
