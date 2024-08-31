@@ -9,12 +9,13 @@ extern void yyerror(const char *);
 int yylex(void);  
 extern int line_number;
 void executeProgram();
+void yyerrorSemantic();
 
 
 TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
 //void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 
-void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type);
 
 
 %}
@@ -30,7 +31,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
     char caractere;
     Identificador identifier;
     Identificadores identifiers;
-    TipoDeDado type;
+    Type type;
     RealParameters types;
     Function* funct;
 }
@@ -53,12 +54,6 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 %token <str> OPERATION
 %token <str> LOGIC_OPERATORS
 %token <str> TYPE
-%token <str> TYPE_INT
-%token <str> TYPE_FLOAT
-%token <str> TYPE_DOUBLE
-%token <str> TYPE_CHAR
-%token <str> TYPE_STRING
-%token <str> TYPE_BOOLEAN
 
 
 %type <type> type
@@ -91,12 +86,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha);
 
 %%
 
-type: TYPE_INT { $$ = marioKart; }
-        | TYPE_FLOAT { $$ = donkey; }
-        | TYPE_DOUBLE { $$ = kong; }
-        | TYPE_CHAR { $$ = mario; }
-        | TYPE_STRING { $$ = superMario; }
-        | TYPE_BOOLEAN { $$ = zelda; }
+type: TYPE { $$ = get_type($1); }
     ;
 
 program: /* empty */
@@ -117,7 +107,7 @@ parameters: COMMA parameter parameters
           | /*empty*/
           ;
 
-parameter: type IDENTIFIER { addId($2.name, variavel, $1, line_number+1); }
+parameter: type IDENTIFIER { addId($2.nome, variavel, $1, line_number+1, $1); }
          | /*empty*/
          ;
 
@@ -177,7 +167,7 @@ return_stmt: RETURN expr SEMICOLON
 assign_stmt: var ASSIGN expr SEMICOLON
            ;
 
-declaration: type IDENTIFIER SEMICOLON { addId($2.name, variavel, $1, line_number+1); }
+declaration: type IDENTIFIER SEMICOLON { addId($2.nome, variavel, $1, line_number+1, $1); }
            ;
 
 code_block: BLOCK_OPEN stmts BLOCK_CLOSE
@@ -231,21 +221,21 @@ condition: expr RELACIONAL_OPERATORS expr
          ;
 */
 
-condition: expr relacionals_op expr
-         | expr logical_op expr
+condition: expr RELACIONAL_OPERATORS expr { Type type = semantica_relop($1, $3, $2[0]);
+                                    if (type == ERRO){
+                                        yyerrorSemantic();
+                                    }
+                                    $$ = type; }
+         | expr LOGIC_OPERATORS expr
          ;
 
-relacionals_op: AND
-                |OR
-                ;
-
-logical_op: EQ
+/*logical_op: EQ
             |NE
             |GT
             |GE
             |LT
             |LE
-            ;
+            ;*/
 
 expr: term { $$ = $1; }
     | call_function { $$ = $1; }
@@ -269,14 +259,14 @@ literal: LITERAL_CHAR { $$ = CHAR; }
 
 %%
 
-void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha) {
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type) {
     if (buscaSimbolo(&tabelaDeSimbolos, id)) {
         char msg[100];
         sprintf(msg, "Redeclaração do identificador \"%s\" na linha %d", id, linha);
         yyerror(msg);
         exit(1);
     }
-    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, linha, tipoSimbolo);
+    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, linha, tipoSimbolo, type);
 }
 
 int main(){
@@ -293,6 +283,12 @@ void executeProgram() {
 void yyerror(const char *s) 
 {
     fprintf(stderr, "Erro: %s próximo a linha %d\n", s, line_number+1);
+    exit(0);
+}
+
+void yyerrorSemantic(){
+    fprintf(stderr, "Erro semântico próximo a linha %d\n", line_number+1);
+    exit(0);
 }
 
 int yywrap() 

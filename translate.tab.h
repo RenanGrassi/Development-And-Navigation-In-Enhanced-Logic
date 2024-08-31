@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 22 "translate.y"
+#line 23 "translate.y"
 
     #include "TabelaDeSimbolos.h" 
 
@@ -138,13 +138,7 @@ extern int yydebug;
     RELACIONAL_OPERATORS = 333,    /* RELACIONAL_OPERATORS  */
     OPERATION = 334,               /* OPERATION  */
     LOGIC_OPERATORS = 335,         /* LOGIC_OPERATORS  */
-    TYPE = 336,                    /* TYPE  */
-    TYPE_INT = 337,                /* TYPE_INT  */
-    TYPE_FLOAT = 338,              /* TYPE_FLOAT  */
-    TYPE_DOUBLE = 339,             /* TYPE_DOUBLE  */
-    TYPE_CHAR = 340,               /* TYPE_CHAR  */
-    TYPE_STRING = 341,             /* TYPE_STRING  */
-    TYPE_BOOLEAN = 342             /* TYPE_BOOLEAN  */
+    TYPE = 336                     /* TYPE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -153,7 +147,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 26 "translate.y"
+#line 27 "translate.y"
 
     char* str;
     int iValue;
@@ -161,11 +155,11 @@ union YYSTYPE
     char caractere;
     Identificador identifier;
     Identificadores identifiers;
-    TipoDeDado type;
+    Type type;
     RealParameters types;
     Function* funct;
 
-#line 169 "translate.tab.h"
+#line 163 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

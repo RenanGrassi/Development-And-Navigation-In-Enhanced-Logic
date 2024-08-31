@@ -6,6 +6,7 @@
 void inicializaTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
     tabelaDeSimbolos->primeiro = NULL;
     tabelaDeSimbolos->ultimo = NULL;
+    tabelaDeSimbolos->tamanho = 0;
 }
 
 void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha) {
@@ -19,9 +20,10 @@ void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha) 
     }
 }
 
-void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int linha, Tipo tipoSimbolo) {
+void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int linha, Tipo tipoSimbolo, Type type) {
     Simbolo *simbolo = (Simbolo *) malloc(sizeof(Simbolo));
     strcpy(simbolo->nome, nome);
+    simbolo->type = type;
     simbolo->tipoDado = tipoDado;
     simbolo->linha = linha;
     simbolo->tipoSimbolo = tipoSimbolo;
@@ -34,6 +36,7 @@ void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado ti
         tabelaDeSimbolos->ultimo->proximo = simbolo;
         tabelaDeSimbolos->ultimo = simbolo;
     }
+    tabelaDeSimbolos->tamanho ++;
 }
 
 Simbolo *buscaSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome) {
@@ -87,8 +90,20 @@ const char* getTipoNome(TipoDeDado tipo) {
     }
 }
 
-void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
+const char* getType(Type type) {
+    switch (type) {
+        case INT: return "int";
+        case STRING: return "string";
+        case FLOAT: return "float";
+        case CHAR: return "char";
+        case FUNCTION: return "função";
+        case ERRO: return "erro";
+        case BOOLEAN: return "boolean";
+        default: return "Desconhecido";
+    }
+}
 
+void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
 
     Simbolo *simbolo = tabelaDeSimbolos->primeiro;
     while (simbolo != NULL) {
@@ -96,11 +111,11 @@ void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos) {
         printf("Tipo de dado: %s\n", getTipoDeDadoNome(simbolo->tipoDado));
         printf("Linha: %d\n", simbolo->linha);
         printf("Tipo de simbolo: %s\n", getTipoNome(simbolo->tipoSimbolo));
+        printf("Type do simbolo: %s\n", getType(simbolo->type));
         printf("\n");
         simbolo = simbolo->proximo;
     }
 }
-
 
 Type semantica_relop(Type type1, Type type2, char op){
     Type resultado = ERRO;
@@ -147,4 +162,55 @@ Type semantica_ternary(Type type1, Type type2){
         resultado = type1;
     }
     return resultado;
+}
+
+
+
+int install_ids(TabelaDeSimbolos *tabelaDeSimbolos, Identificador identificador){
+    Simbolo *simbolo = (Simbolo *) malloc(sizeof(Simbolo));
+    simbolo = buscaSimbolo(tabelaDeSimbolos,identificador.nome);
+    //aqui vai ter que testar as outras 3 possibilidades tb:
+    //int status = install_id(simbolo->nome, identificador.type, simbolo->tipoSimbolo);
+    //int status = install_id(simbolo->nome, simbolo->tipoSimbolo, identificador.type);
+    //int status = install_id(simbolo->nome, simbolo->tipoDado, identificador.type);
+    int status = install_id(simbolo->nome, identificador.type, simbolo->tipoDado);
+    if (status != SUCESS0){
+        return status;
+    }
+
+
+    return NULL;
+}
+
+
+int install_id(char *name, Type type, Type value_type){
+    if (type != value_type && type != FUNCTION){
+        return ERRO_SEMANTICO;
+    }
+
+    return SUCESS0;
+}
+
+Type get_type(const char *str)
+{
+    if (strcmp(str, "marioKart") == 0)
+    {
+        return INT;
+    }
+    if (strcmp(str, "donkey") == 0)
+    {
+        return FLOAT;
+    }
+    if (strcmp(str, "mario") == 0)
+    {
+        return CHAR;
+    }
+    if (strcmp(str, "zelda") == 0)
+    {
+        return BOOLEAN;
+    }
+    if (strcmp(str, "superMario") == 0)
+    {
+        return STRING;
+    }
 }

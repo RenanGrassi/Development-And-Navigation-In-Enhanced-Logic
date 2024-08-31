@@ -8,10 +8,10 @@ extern int yylineno;
 void yyerror(const char *);
 %}
 
-/* Direciona o flex a ler apenas um arquivo de entrada */ 
+/* Direciona o flex a ler apenas um arquivo de entrada */
 %option noyywrap 
 
-/* Definicoes Regulares */ 
+/* Definicoes Regulares */
 ws          [ \t\n]+ 
 
 /* Tipos primitivos de dados */
@@ -106,12 +106,7 @@ literal_char     {single_quot}.{single_quot}
 %%
 
 
-{marioKart}          { return TYPE_INT; }
-{donkey}             { return TYPE_FLOAT; }
-{kong}               { return TYPE_DOUBLE; }
-{mario}              { return TYPE_CHAR; }
-{superMario}         { return TYPE_STRING; }
-{zelda}              { return TYPE_BOOLEAN; }
+{type}                { yylval.str = strdup(yytext); return TYPE; }
 
 {fezALista}           { return IF; }
 {nao}                 { return ELSE; }
@@ -153,20 +148,14 @@ literal_char     {single_quot}.{single_quot}
 {assign}              { return ASSIGN; }
 {semicolon}           { return SEMICOLON; }
 {operation}           { yylval.str = strdup(yytext); return OPERATION; }
+{relacional_op}       { yylval.str = strdup(yytext); return RELACIONAL_OPERATORS; }
+{logic_operator}      { yylval.str = strdup(yytext); return LOGIC_OPERATORS; }
 
 
 {single_line_comment}    { /* Ignorar comentários de uma linha */ }
 {multi_line_comment}     { /* Ignorar comentários de múltiplas linhas */ }
 
 
-"<"                  { return LT; }
-">"                  { return GT; }
-"<="                 { return LE; }
-">="                 { return GE; }
-"=="                 { return EQ; }
-"!="                 { return NE; }
-"&&"                 { return AND; }
-"||"                 { return OR; }
 "!"                  { return NEGA; }
 "\\+\\+"             { return INCREMENT; }
 "--"                 { return DECREMENT; }

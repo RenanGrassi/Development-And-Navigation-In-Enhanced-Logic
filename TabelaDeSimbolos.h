@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define ERRO_SEMANTICO 0
+#define SUCESS0 1
+
 typedef enum {
     INT,
     FLOAT,
@@ -24,7 +27,7 @@ typedef struct
 
 
 typedef struct {
-    char* name;
+    char* nome;
     Type type;
 } Identificador;
 
@@ -62,6 +65,7 @@ typedef enum Tipo {
 typedef struct Simbolo {
     char nome[50];
     TipoDeDado tipoDado;
+    Type type;
     struct Simbolo *proximo;
     int linha;
     Tipo tipoSimbolo;
@@ -70,18 +74,24 @@ typedef struct Simbolo {
 typedef struct TabelaDeSimbolos {
     Simbolo *primeiro;
     Simbolo *ultimo;
+    int tamanho;
 } TabelaDeSimbolos;
 
 void inicializaTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
-void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int linha, Tipo tipoSimbolo);
+void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado tipoDado, int linha, Tipo tipoSimbolo, Type type);
 Simbolo *buscaSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 void removeSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha);
+int install_ids(TabelaDeSimbolos *tabelaDeSimbolos, Identificador identificador);
+int install_id(char* name, Type type, Type value_type);
+
 Type semantica_relop(Type type1, Type type2, char op);
 Type semantica_op(Type type1, Type type2, char op);
 Type semantica_logic(Type type1, Type type2);
 Type semantica_ternary(Type type1, Type type2);
+
+Type get_type(const char* str);
 
 
 
