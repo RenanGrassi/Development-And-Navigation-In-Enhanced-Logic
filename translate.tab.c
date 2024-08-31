@@ -79,7 +79,7 @@ extern void yyerror(const char *);
 int yylex(void);  
 extern int line_number;
 void executeProgram();
-void yyerrorSemantic();
+extern void yyerrorSemantic(const char *s);
 
 
 TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
@@ -638,7 +638,7 @@ static const yytype_int16 yyrline[] =
      164,   167,   170,   173,   176,   179,   180,   181,   184,   186,
      189,   192,   193,   196,   197,   200,   201,   204,   205,   208,
      209,   212,   215,   216,   224,   229,   240,   241,   242,   243,
-     246,   247,   248,   249,   252,   255,   256,   257
+     246,   247,   248,   249,   252,   263,   264,   265
 };
 #endif
 
@@ -1379,78 +1379,81 @@ yyreduce:
 #line 1380 "translate.tab.c"
     break;
 
-  case 64: /* condition: expr RELACIONAL_OPERATORS expr  */
-#line 224 "translate.y"
-                                          { Type type = semantica_relop((yyvsp[-2].type), (yyvsp[0].type), (yyvsp[-1].str)[0]);
-                                    if (type == ERRO){
-                                        yyerrorSemantic();
-                                    }
-                                    (yyval.type) = type; }
-#line 1390 "translate.tab.c"
-    break;
-
   case 66: /* expr: term  */
 #line 240 "translate.y"
            { (yyval.type) = (yyvsp[0].type); }
-#line 1396 "translate.tab.c"
+#line 1386 "translate.tab.c"
     break;
 
   case 67: /* expr: call_function  */
 #line 241 "translate.y"
                     { (yyval.type) = (yyvsp[0].type); }
-#line 1402 "translate.tab.c"
+#line 1392 "translate.tab.c"
     break;
 
   case 68: /* expr: OPEN_PARENTHESES expr CLOSE_PARENTHESES  */
 #line 242 "translate.y"
                                               { (yyval.type) = (yyvsp[-1].type); }
-#line 1408 "translate.tab.c"
+#line 1398 "translate.tab.c"
     break;
 
   case 70: /* term: DIGITS  */
 #line 246 "translate.y"
              { (yyval.type) = INT; }
-#line 1414 "translate.tab.c"
+#line 1404 "translate.tab.c"
     break;
 
   case 71: /* term: var  */
 #line 247 "translate.y"
           { (yyval.type) = (yyvsp[0].identifier).type; }
-#line 1420 "translate.tab.c"
+#line 1410 "translate.tab.c"
     break;
 
   case 72: /* term: literal  */
 #line 248 "translate.y"
               { (yyval.type) = (yyvsp[0].type); }
-#line 1426 "translate.tab.c"
+#line 1416 "translate.tab.c"
     break;
 
   case 73: /* term: DECIMAL  */
 #line 249 "translate.y"
               { (yyval.type) = FLOAT; }
-#line 1432 "translate.tab.c"
+#line 1422 "translate.tab.c"
+    break;
+
+  case 74: /* var: IDENTIFIER  */
+#line 252 "translate.y"
+                {
+    if (!buscaSimbolo(&tabelaDeSimbolos, (yyvsp[0].identifier).nome)) {
+        char msg[100];
+        sprintf(msg, "Variável \"%s\" não declarada", (yyvsp[0].identifier).nome);
+        yyerrorSemantic(msg);
+    }
+    (yyval.identifier) = (yyvsp[0].identifier);
+}
+#line 1435 "translate.tab.c"
     break;
 
   case 75: /* literal: LITERAL_CHAR  */
-#line 255 "translate.y"
+#line 263 "translate.y"
                       { (yyval.type) = CHAR; }
-#line 1438 "translate.tab.c"
+#line 1441 "translate.tab.c"
     break;
 
   case 76: /* literal: LITERAL_STRING  */
-#line 256 "translate.y"
+#line 264 "translate.y"
                          { (yyval.type) = STRING; }
-#line 1444 "translate.tab.c"
+#line 1447 "translate.tab.c"
     break;
 
   case 77: /* literal: LITERAL_BOOL  */
-#line 257 "translate.y"
+#line 265 "translate.y"
                        { (yyval.type) =  BOOLEAN; }
-#line 1450 "translate.tab.c"
+#line 1453 "translate.tab.c"
     break;
 
 
-#line 1454 "translate.tab.c"
+#line 1457 "translate.tab.c"
 
       default: break;
     }
@@ -1643,7 +1646,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 260 "translate.y"
+#line 268 "translate.y"
 
 
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type) {
@@ -1673,8 +1676,9 @@ void yyerror(const char *s)
     exit(0);
 }
 
-void yyerrorSemantic(){
-    fprintf(stderr, "Erro semântico próximo a linha %d\n", line_number+1);
+void yyerrorSemantic(const char *s)
+{
+    fprintf(stderr, "Erro semântico próximo a linha %d: %s\n", line_number+1, s);
     exit(0);
 }
 

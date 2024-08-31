@@ -4,6 +4,7 @@ mario bijas;
 marioKart link;
 link = 2;
 bijas = 'a';
+teste = 2;
 
 fezALista(link > bijas):{
     zelda teste;

@@ -9,7 +9,7 @@ extern void yyerror(const char *);
 int yylex(void);  
 extern int line_number;
 void executeProgram();
-void yyerrorSemantic();
+extern void yyerrorSemantic(const char *s);
 
 
 TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
@@ -221,11 +221,11 @@ condition: expr RELACIONAL_OPERATORS expr
          ;
 */
 
-condition: expr RELACIONAL_OPERATORS expr { Type type = semantica_relop($1, $3, $2[0]);
+condition: expr RELACIONAL_OPERATORS expr /*{ Type type = semantica_relop($1, $3, $2[0]);
                                     if (type == ERRO){
                                         yyerrorSemantic();
                                     }
-                                    $$ = type; }
+                                    $$ = type; }*/
          | expr LOGIC_OPERATORS expr
          ;
 
@@ -249,8 +249,16 @@ term: DIGITS { $$ = INT; }
     | DECIMAL { $$ = FLOAT; }
     ;
 
-var: IDENTIFIER
-   ;
+var: IDENTIFIER {
+    if (!buscaSimbolo(&tabelaDeSimbolos, $1.nome)) {
+        char msg[100];
+        sprintf(msg, "Variável \"%s\" não declarada", $1.nome);
+        yyerrorSemantic(msg);
+    }
+    $$ = $1;
+}
+;
+
 
 literal: LITERAL_CHAR { $$ = CHAR; }
         | LITERAL_STRING { $$ = STRING; }
@@ -286,8 +294,9 @@ void yyerror(const char *s)
     exit(0);
 }
 
-void yyerrorSemantic(){
-    fprintf(stderr, "Erro semântico próximo a linha %d\n", line_number+1);
+void yyerrorSemantic(const char *s)
+{
+    fprintf(stderr, "Erro semântico próximo a linha %d: %s\n", line_number+1, s);
     exit(0);
 }
 
