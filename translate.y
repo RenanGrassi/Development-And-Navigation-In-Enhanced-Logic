@@ -164,7 +164,15 @@ return_stmt: RETURN expr SEMICOLON
            | RETURN SEMICOLON
            ;
 
-assign_stmt: var ASSIGN expr SEMICOLON
+assign_stmt: var ASSIGN expr SEMICOLON {
+    Type varType = buscaSimbolo(&tabelaDeSimbolos, $1.nome)->type;
+    Type exprType = $3;
+    if (varType != exprType) {
+        char msg[100];
+        sprintf(msg, "Tipo incompatível na atribuição de %s", $1.nome);
+        yyerrorSemantic(msg);
+    }
+}
            ;
 
 declaration: type IDENTIFIER SEMICOLON { addId($2.nome, variavel, $1, line_number+1, $1); }

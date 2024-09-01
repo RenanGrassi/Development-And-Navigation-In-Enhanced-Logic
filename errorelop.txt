@@ -1,11 +1,5 @@
 boatarde
 
-mario bijas;
-marioKart link;
-link = 2;
-bijas = 'a';
-teste = 2;
+zelda bijas;
+bijas = 5;
 
-fezALista(link > bijas):{
-    zelda teste;
-}
