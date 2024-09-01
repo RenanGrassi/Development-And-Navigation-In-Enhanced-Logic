@@ -36,13 +36,12 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type
     Function* funct;
 }
 
-%token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT TYPEDEF
-%token PRINT PRINTLN WHILE GOTO SCANF INT_MAIN READ_FILE CLOSE_FILE
+%token IF ELSE ELIF FOR RETURN CONTINUE BREAK SWITCH CASE DEFAULT
+%token PRINT PRINTLN WHILE INT_MAIN READ_FILE CLOSE_FILE
 %token OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET COMMA SEMICOLON COLON
-%token FUNCTION_CALL ARQUIVO ENUM STRUCT_KEYWORD SWAP MALLOC FREE DANIBOY LT GT LE GE EQ NE AND OR NEGA
-%token SUB MUL DIV MOD INCREMENT DECREMENT ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN XOR LEFT_SHIFT
-%token RIGHT_SHIFT QUEST SEMI_COLON BLOCK_CLOSE BLOCK_OPEN DOT ARROW SUSTENIDO
-%token ASSIGN ADD MINUS INPUT
+%token FUNCTION_CALL
+%token BLOCK_CLOSE BLOCK_OPEN
+%token ASSIGN INPUT
 %token <str> LITERAL_STRING
 %token <str> LITERAL_BOOL
 %token <caractere> LITERAL_CHAR
@@ -65,24 +64,13 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type
 %type <type> real_parameters
 %type <type> real_parameters2
 %type <type> real_parameter
-%type <type> condition
 %type <type> stmts
 %start program
 
-%left COMMA
-%right ASSIGN ADD_ASSIGN DIV_ASSIGN MOD_ASSIGN MUL_ASSIGN SUB_ASSIGN
-%right QUEST COLON
-%left OR
-%left XOR
-%left AND
-%left EQ NE
-%left LT LE GE GT
-%left LEFT_SHIFT RIGHT_SHIFT
-%left ADD SUB
-%left MUL DIV MOD
+
 %left OPERATION
-%right INCREMENT DECREMENT 
-%left OPEN_PARENTHESES CLOSE_PARENTHESES OPEN_BRACKET CLOSE_BRACKET DOT
+%left RELACIONAL_OPERATORS
+%left LOGIC_OPERATORS
 
 %%
 
@@ -181,17 +169,17 @@ declaration: type IDENTIFIER SEMICOLON { addId($2.nome, variavel, $1, line_numbe
 code_block: BLOCK_OPEN stmts BLOCK_CLOSE
           ;
 
-if_stmt: IF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else_stmt
+if_stmt: IF OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON code_block else_stmt
     ;
 
-else_stmt: ELIF OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block else_stmt
+else_stmt: ELIF OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON code_block else_stmt
           | ELSE COLON code_block
           | 
           ;
 
-while_stmt: WHILE OPEN_PARENTHESES condition CLOSE_PARENTHESES COLON code_block
+while_stmt: WHILE OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON code_block
           ;
-for_stmt: FOR OPEN_PARENTHESES assign_stmt SEMICOLON condition SEMICOLON CLOSE_PARENTHESES COLON code_block
+for_stmt: FOR OPEN_PARENTHESES assign_stmt SEMICOLON expr SEMICOLON CLOSE_PARENTHESES COLON code_block
         ;
 
 switch_stmt: SWITCH OPEN_PARENTHESES expr CLOSE_PARENTHESES COLON cases default_case
@@ -223,17 +211,12 @@ input_stmt: INPUT OPEN_PARENTHESES input_text CLOSE_PARENTHESES SEMICOLON
 input_text: var
           | input_text COMMA var
           ;
-/* 
-condition: expr RELACIONAL_OPERATORS expr
-         | expr LOGIC_OPERATORS expr
-         ;
-*/
 
-condition: expr RELACIONAL_OPERATORS expr /*{ Type type = semantica_relop($1, $3, $2[0]);
+/*condition: expr RELACIONAL_OPERATORS expr { Type type = semantica_relop($1, $3, $2[0]);
                                     if (type == ERRO){
                                         yyerrorSemantic();
                                     }
-                                    $$ = type; }*/
+                                    $$ = type; }
          | expr LOGIC_OPERATORS expr
          ;
 
@@ -245,10 +228,12 @@ condition: expr RELACIONAL_OPERATORS expr /*{ Type type = semantica_relop($1, $3
             |LE
             ;*/
 
-expr: term { $$ = $1; }
+expr: expr OPERATION expr
+    | expr LOGIC_OPERATORS expr
+    | expr RELACIONAL_OPERATORS expr { printf("entrou"); }
+    | term { $$ = $1; }
     | call_function { $$ = $1; }
     | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2; }
-    | expr OPERATION expr
     ;
 
 term: DIGITS { $$ = INT; }

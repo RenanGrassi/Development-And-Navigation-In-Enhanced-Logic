@@ -70,75 +70,35 @@ extern int yydebug;
     SWITCH = 265,                  /* SWITCH  */
     CASE = 266,                    /* CASE  */
     DEFAULT = 267,                 /* DEFAULT  */
-    TYPEDEF = 268,                 /* TYPEDEF  */
-    PRINT = 269,                   /* PRINT  */
-    PRINTLN = 270,                 /* PRINTLN  */
-    WHILE = 271,                   /* WHILE  */
-    GOTO = 272,                    /* GOTO  */
-    SCANF = 273,                   /* SCANF  */
-    INT_MAIN = 274,                /* INT_MAIN  */
-    READ_FILE = 275,               /* READ_FILE  */
-    CLOSE_FILE = 276,              /* CLOSE_FILE  */
-    OPEN_PARENTHESES = 277,        /* OPEN_PARENTHESES  */
-    CLOSE_PARENTHESES = 278,       /* CLOSE_PARENTHESES  */
-    OPEN_BRACKET = 279,            /* OPEN_BRACKET  */
-    CLOSE_BRACKET = 280,           /* CLOSE_BRACKET  */
-    COMMA = 281,                   /* COMMA  */
-    SEMICOLON = 282,               /* SEMICOLON  */
-    COLON = 283,                   /* COLON  */
-    FUNCTION_CALL = 284,           /* FUNCTION_CALL  */
-    ARQUIVO = 285,                 /* ARQUIVO  */
-    ENUM = 286,                    /* ENUM  */
-    STRUCT_KEYWORD = 287,          /* STRUCT_KEYWORD  */
-    SWAP = 288,                    /* SWAP  */
-    MALLOC = 289,                  /* MALLOC  */
-    FREE = 290,                    /* FREE  */
-    DANIBOY = 291,                 /* DANIBOY  */
-    LT = 292,                      /* LT  */
-    GT = 293,                      /* GT  */
-    LE = 294,                      /* LE  */
-    GE = 295,                      /* GE  */
-    EQ = 296,                      /* EQ  */
-    NE = 297,                      /* NE  */
-    AND = 298,                     /* AND  */
-    OR = 299,                      /* OR  */
-    NEGA = 300,                    /* NEGA  */
-    SUB = 301,                     /* SUB  */
-    MUL = 302,                     /* MUL  */
-    DIV = 303,                     /* DIV  */
-    MOD = 304,                     /* MOD  */
-    INCREMENT = 305,               /* INCREMENT  */
-    DECREMENT = 306,               /* DECREMENT  */
-    ADD_ASSIGN = 307,              /* ADD_ASSIGN  */
-    SUB_ASSIGN = 308,              /* SUB_ASSIGN  */
-    MUL_ASSIGN = 309,              /* MUL_ASSIGN  */
-    DIV_ASSIGN = 310,              /* DIV_ASSIGN  */
-    MOD_ASSIGN = 311,              /* MOD_ASSIGN  */
-    XOR = 312,                     /* XOR  */
-    LEFT_SHIFT = 313,              /* LEFT_SHIFT  */
-    RIGHT_SHIFT = 314,             /* RIGHT_SHIFT  */
-    QUEST = 315,                   /* QUEST  */
-    SEMI_COLON = 316,              /* SEMI_COLON  */
-    BLOCK_CLOSE = 317,             /* BLOCK_CLOSE  */
-    BLOCK_OPEN = 318,              /* BLOCK_OPEN  */
-    DOT = 319,                     /* DOT  */
-    ARROW = 320,                   /* ARROW  */
-    SUSTENIDO = 321,               /* SUSTENIDO  */
-    ASSIGN = 322,                  /* ASSIGN  */
-    ADD = 323,                     /* ADD  */
-    MINUS = 324,                   /* MINUS  */
-    INPUT = 325,                   /* INPUT  */
-    LITERAL_STRING = 326,          /* LITERAL_STRING  */
-    LITERAL_BOOL = 327,            /* LITERAL_BOOL  */
-    LITERAL_CHAR = 328,            /* LITERAL_CHAR  */
-    IDENTIFIER = 329,              /* IDENTIFIER  */
-    DIGITS = 330,                  /* DIGITS  */
-    DECIMAL = 331,                 /* DECIMAL  */
-    FUNCT = 332,                   /* FUNCT  */
-    RELACIONAL_OPERATORS = 333,    /* RELACIONAL_OPERATORS  */
-    OPERATION = 334,               /* OPERATION  */
-    LOGIC_OPERATORS = 335,         /* LOGIC_OPERATORS  */
-    TYPE = 336                     /* TYPE  */
+    PRINT = 268,                   /* PRINT  */
+    PRINTLN = 269,                 /* PRINTLN  */
+    WHILE = 270,                   /* WHILE  */
+    INT_MAIN = 271,                /* INT_MAIN  */
+    READ_FILE = 272,               /* READ_FILE  */
+    CLOSE_FILE = 273,              /* CLOSE_FILE  */
+    OPEN_PARENTHESES = 274,        /* OPEN_PARENTHESES  */
+    CLOSE_PARENTHESES = 275,       /* CLOSE_PARENTHESES  */
+    OPEN_BRACKET = 276,            /* OPEN_BRACKET  */
+    CLOSE_BRACKET = 277,           /* CLOSE_BRACKET  */
+    COMMA = 278,                   /* COMMA  */
+    SEMICOLON = 279,               /* SEMICOLON  */
+    COLON = 280,                   /* COLON  */
+    FUNCTION_CALL = 281,           /* FUNCTION_CALL  */
+    BLOCK_CLOSE = 282,             /* BLOCK_CLOSE  */
+    BLOCK_OPEN = 283,              /* BLOCK_OPEN  */
+    ASSIGN = 284,                  /* ASSIGN  */
+    INPUT = 285,                   /* INPUT  */
+    LITERAL_STRING = 286,          /* LITERAL_STRING  */
+    LITERAL_BOOL = 287,            /* LITERAL_BOOL  */
+    LITERAL_CHAR = 288,            /* LITERAL_CHAR  */
+    IDENTIFIER = 289,              /* IDENTIFIER  */
+    DIGITS = 290,                  /* DIGITS  */
+    DECIMAL = 291,                 /* DECIMAL  */
+    FUNCT = 292,                   /* FUNCT  */
+    RELACIONAL_OPERATORS = 293,    /* RELACIONAL_OPERATORS  */
+    OPERATION = 294,               /* OPERATION  */
+    LOGIC_OPERATORS = 295,         /* LOGIC_OPERATORS  */
+    TYPE = 296                     /* TYPE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -159,7 +119,7 @@ union YYSTYPE
     RealParameters types;
     Function* funct;
 
-#line 163 "translate.tab.h"
+#line 123 "translate.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,5 +1,11 @@
 boatarde
 
-zelda bijas;
-bijas = 5;
+marioKart a;
+marioKart b;
+a = 1;
+b = 2;
+
+fezALista(a > b):{
+    a = 3;
+}
 

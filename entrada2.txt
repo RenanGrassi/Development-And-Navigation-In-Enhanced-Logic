@@ -1,14 +1,15 @@
-masNaoEObvio funcao(kong palavra){
+masNaoEObvio funcao(marioKart palavra){
     palavra = 2;
 }
 
 boatarde
 
-marioKart variavel = 1;
+marioKart variavel;
+variavel = 1;
 
-masIssoEObvio funcao(f);
+masIssoEObvio funcao(variavel);;
 
-veeeeja(variavel,f);
+veeeeja(variavel);
 
 chamada 'variavel';
 

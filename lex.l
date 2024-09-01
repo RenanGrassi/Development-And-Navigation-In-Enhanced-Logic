@@ -113,7 +113,6 @@ literal_char     {single_quot}.{single_quot}
 {naoFez}              { return ELIF; }
 {eAGreve}             { return WHILE; }
 {adiaarOTP}           { return FOR; }
-{vamosLa}             { return GOTO; }
 {momentoOportuno}     { return BREAK; }
 {muitoBem}            { return CONTINUE; }
 {temosUmImpasse}      { return SWITCH; }
@@ -124,19 +123,11 @@ literal_char     {single_quot}.{single_quot}
 {diga}                { return INPUT; }
 {masNaoEObvio}        { return FUNCT; }
 {masIssoEObvio}       { return FUNCTION_CALL; }
-{nintendo}            { return ARQUIVO; }
 {boa_tarde}           { return INT_MAIN; }
 {switch}           { return READ_FILE;}
 {wii}                 { return CLOSE_FILE; }
-{eOVisto}             { return ENUM; }
-{penseBem}            { return TYPEDEF; }
-{struct_keyword}      { return STRUCT_KEYWORD; }
-{pqEuPosso}           { return SWAP; }  
-{naoEMagico}          { return MALLOC; }
-{reuniao14h}          { return FREE; }
 
 {chamada}             { return RETURN; }
-{daniboy}             { return DANIBOY; }
 {digits}              { yylval.iValue = atoi(yytext); return DIGITS; }
 {ws}                  { line_number += (*yytext == '\n'); }
 
@@ -156,18 +147,7 @@ literal_char     {single_quot}.{single_quot}
 {multi_line_comment}     { /* Ignorar comentários de múltiplas linhas */ }
 
 
-"!"                  { return NEGA; }
-"\\+\\+"             { return INCREMENT; }
-"--"                 { return DECREMENT; }
-"\\+="               { return ADD_ASSIGN; }
-"\\-="               { return SUB_ASSIGN; }
-"\\*="               { return MUL_ASSIGN; }
-"/="                 { return DIV_ASSIGN; }
-"%="                 { return MOD_ASSIGN; }
-"\\^"                { return XOR; }
-"<<"                 { return LEFT_SHIFT; }
-">>"                 { return RIGHT_SHIFT; }
-"?"                  { return QUEST; }
+
 ":"                  { return COLON; }
 ","                  { return COMMA; }
 ")"                  { return CLOSE_PARENTHESES; }
@@ -176,8 +156,5 @@ literal_char     {single_quot}.{single_quot}
 "["                  { return OPEN_BRACKET; }
 "}"                  { return BLOCK_CLOSE; }
 "{"                  { return BLOCK_OPEN; }
-"\\."                { return DOT; }
-"->"                 { return ARROW; }
-"#"                  { return SUSTENIDO; }
 
 %%
