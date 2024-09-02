@@ -134,10 +134,11 @@ Type semantica_relop(Type type1, Type type2, char op){
 }
 
 Type semantica_op(Type type1, Type type2, char op){
-    char vetor1[15];
-    vetor1[15]= tipoParaString(type1);
-    char vetor2[15] = tipoParaString(type2);
-    printf("Tipo 1 %s, tipo2 %s\n",vetor1,vetor2);;
+    char *vetor1 = tipoParaString(type1);  // Use char * to store the returned string.
+    char *vetor2 = tipoParaString(type2);  // Use char * to store the returned string.
+
+    printf("Tipo 1 %s, tipo2 %s\n", vetor1, vetor2);  // Now the types match %s.
+
 
     Type resultado = ERRO;
     if (type1 == INT && type2 == INT){

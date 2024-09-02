@@ -112,7 +112,105 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type
 #  endif
 # endif
 
-#include "translate.tab.h"
+
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+/* "%code requires" blocks.  */
+#line 23 "translate.y"
+
+    #include "TabelaDeSimbolos.h" 
+
+#line 129 "translate.tab.c"
+
+/* Token kinds.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
+  {
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    IF = 258,                      /* IF  */
+    ELSE = 259,                    /* ELSE  */
+    ELIF = 260,                    /* ELIF  */
+    FOR = 261,                     /* FOR  */
+    RETURN = 262,                  /* RETURN  */
+    CONTINUE = 263,                /* CONTINUE  */
+    BREAK = 264,                   /* BREAK  */
+    SWITCH = 265,                  /* SWITCH  */
+    CASE = 266,                    /* CASE  */
+    DEFAULT = 267,                 /* DEFAULT  */
+    PRINT = 268,                   /* PRINT  */
+    PRINTLN = 269,                 /* PRINTLN  */
+    WHILE = 270,                   /* WHILE  */
+    INT_MAIN = 271,                /* INT_MAIN  */
+    READ_FILE = 272,               /* READ_FILE  */
+    CLOSE_FILE = 273,              /* CLOSE_FILE  */
+    OPEN_PARENTHESES = 274,        /* OPEN_PARENTHESES  */
+    CLOSE_PARENTHESES = 275,       /* CLOSE_PARENTHESES  */
+    OPEN_BRACKET = 276,            /* OPEN_BRACKET  */
+    CLOSE_BRACKET = 277,           /* CLOSE_BRACKET  */
+    COMMA = 278,                   /* COMMA  */
+    SEMICOLON = 279,               /* SEMICOLON  */
+    COLON = 280,                   /* COLON  */
+    FUNCTION_CALL = 281,           /* FUNCTION_CALL  */
+    BLOCK_CLOSE = 282,             /* BLOCK_CLOSE  */
+    BLOCK_OPEN = 283,              /* BLOCK_OPEN  */
+    ASSIGN = 284,                  /* ASSIGN  */
+    INPUT = 285,                   /* INPUT  */
+    LITERAL_STRING = 286,          /* LITERAL_STRING  */
+    LITERAL_BOOL = 287,            /* LITERAL_BOOL  */
+    LITERAL_CHAR = 288,            /* LITERAL_CHAR  */
+    IDENTIFIER = 289,              /* IDENTIFIER  */
+    DIGITS = 290,                  /* DIGITS  */
+    DECIMAL = 291,                 /* DECIMAL  */
+    FUNCT = 292,                   /* FUNCT  */
+    RELACIONAL_OPERATORS = 293,    /* RELACIONAL_OPERATORS  */
+    OPERATION = 294,               /* OPERATION  */
+    LOGIC_OPERATORS = 295,         /* LOGIC_OPERATORS  */
+    TYPE = 296                     /* TYPE  */
+  };
+  typedef enum yytokentype yytoken_kind_t;
+#endif
+
+/* Value type.  */
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+union YYSTYPE
+{
+#line 27 "translate.y"
+
+    char* str;
+    int iValue;
+    double real;
+    char caractere;
+    Identificador identifier;
+    Identificadores identifiers;
+    Type type;
+    RealParameters types;
+    Function* funct;
+
+#line 199 "translate.tab.c"
+
+};
+typedef union YYSTYPE YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
+#endif
+
+
+extern YYSTYPE yylval;
+
+
+int yyparse (void);
+
+
+
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1272,7 +1370,7 @@ yyreduce:
   case 2: /* type: TYPE  */
 #line 77 "translate.y"
            { (yyval.type) = get_type((yyvsp[0].str)); }
-#line 1276 "translate.tab.c"
+#line 1374 "translate.tab.c"
     break;
 
   case 4: /* program: functions main  */
@@ -1281,49 +1379,49 @@ yyreduce:
        imprimeTabelaDeSimbolos(&tabelaDeSimbolos); 
        executeProgram(); 
 }
-#line 1285 "translate.tab.c"
+#line 1383 "translate.tab.c"
     break;
 
   case 10: /* parameter: type IDENTIFIER  */
 #line 98 "translate.y"
                            { addId((yyvsp[0].identifier).nome, variavel, (yyvsp[-1].type), line_number+1, (yyvsp[-1].type)); }
-#line 1291 "translate.tab.c"
+#line 1389 "translate.tab.c"
     break;
 
   case 13: /* stmts: stmt stmts  */
 #line 105 "translate.y"
                   { (yyval.type) = TYPE; }
-#line 1297 "translate.tab.c"
+#line 1395 "translate.tab.c"
     break;
 
   case 14: /* stmts: %empty  */
 #line 106 "translate.y"
                    { (yyval.type) = NONE; }
-#line 1303 "translate.tab.c"
+#line 1401 "translate.tab.c"
     break;
 
   case 33: /* call_function: FUNCTION_CALL IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON  */
 #line 137 "translate.y"
                                                                                                      { (yyval.type) = FUNCTION; }
-#line 1309 "translate.tab.c"
+#line 1407 "translate.tab.c"
     break;
 
   case 35: /* real_parameters: %empty  */
 #line 141 "translate.y"
                  { (yyval.type) = NONE; }
-#line 1315 "translate.tab.c"
+#line 1413 "translate.tab.c"
     break;
 
   case 36: /* real_parameters2: COMMA real_parameter real_parameters2  */
 #line 144 "translate.y"
                                                         { (yyval.type) = (yyvsp[-1].type); }
-#line 1321 "translate.tab.c"
+#line 1419 "translate.tab.c"
     break;
 
   case 37: /* real_parameters2: %empty  */
 #line 145 "translate.y"
                   { (yyval.type) = NONE; }
-#line 1327 "translate.tab.c"
+#line 1425 "translate.tab.c"
     break;
 
   case 41: /* assign_stmt: var ASSIGN expr SEMICOLON  */
@@ -1337,13 +1435,13 @@ yyreduce:
         yyerrorSemantic(msg);
     }
 }
-#line 1341 "translate.tab.c"
+#line 1439 "translate.tab.c"
     break;
 
   case 42: /* declaration: type IDENTIFIER SEMICOLON  */
 #line 166 "translate.y"
                                        { addId((yyvsp[-1].identifier).nome, variavel, (yyvsp[-2].type), line_number+1, (yyvsp[-2].type)); }
-#line 1347 "translate.tab.c"
+#line 1445 "translate.tab.c"
     break;
 
   case 64: /* expr: expr OPERATION expr  */
@@ -1354,7 +1452,7 @@ yyreduce:
         yyerrorSemantic("Operação inválida entre tipos incompatíveis.");
     }
 }
-#line 1358 "translate.tab.c"
+#line 1456 "translate.tab.c"
     break;
 
   case 65: /* expr: expr LOGIC_OPERATORS expr  */
@@ -1365,7 +1463,7 @@ yyreduce:
         yyerrorSemantic("Operação lógica inválida entre tipos incompatíveis.");
     }
 }
-#line 1369 "translate.tab.c"
+#line 1467 "translate.tab.c"
     break;
 
   case 66: /* expr: expr RELACIONAL_OPERATORS expr  */
@@ -1376,49 +1474,49 @@ yyreduce:
         yyerrorSemantic("Operação relacional inválida entre tipos incompatíveis.");
     }
 }
-#line 1380 "translate.tab.c"
+#line 1478 "translate.tab.c"
     break;
 
   case 67: /* expr: term  */
 #line 249 "translate.y"
            { (yyval.type) = (yyvsp[0].type); }
-#line 1386 "translate.tab.c"
+#line 1484 "translate.tab.c"
     break;
 
   case 68: /* expr: call_function  */
 #line 250 "translate.y"
                     { (yyval.type) = (yyvsp[0].type); }
-#line 1392 "translate.tab.c"
+#line 1490 "translate.tab.c"
     break;
 
   case 69: /* expr: OPEN_PARENTHESES expr CLOSE_PARENTHESES  */
 #line 251 "translate.y"
                                               { (yyval.type) = (yyvsp[-1].type); }
-#line 1398 "translate.tab.c"
+#line 1496 "translate.tab.c"
     break;
 
   case 70: /* term: DIGITS  */
 #line 254 "translate.y"
              { (yyval.type) = INT; }
-#line 1404 "translate.tab.c"
+#line 1502 "translate.tab.c"
     break;
 
   case 71: /* term: var  */
 #line 255 "translate.y"
           { (yyval.type) = (yyvsp[0].identifier).type; }
-#line 1410 "translate.tab.c"
+#line 1508 "translate.tab.c"
     break;
 
   case 72: /* term: literal  */
 #line 256 "translate.y"
               { (yyval.type) = (yyvsp[0].type); }
-#line 1416 "translate.tab.c"
+#line 1514 "translate.tab.c"
     break;
 
   case 73: /* term: DECIMAL  */
 #line 257 "translate.y"
               { (yyval.type) = FLOAT; }
-#line 1422 "translate.tab.c"
+#line 1520 "translate.tab.c"
     break;
 
   case 74: /* var: IDENTIFIER  */
@@ -1431,29 +1529,29 @@ yyreduce:
     }
     (yyval.identifier) = (yyvsp[0].identifier);
 }
-#line 1435 "translate.tab.c"
+#line 1533 "translate.tab.c"
     break;
 
   case 75: /* literal: LITERAL_CHAR  */
 #line 271 "translate.y"
                       { (yyval.type) = CHAR; }
-#line 1441 "translate.tab.c"
+#line 1539 "translate.tab.c"
     break;
 
   case 76: /* literal: LITERAL_STRING  */
 #line 272 "translate.y"
                          { (yyval.type) = STRING; }
-#line 1447 "translate.tab.c"
+#line 1545 "translate.tab.c"
     break;
 
   case 77: /* literal: LITERAL_BOOL  */
 #line 273 "translate.y"
                        { (yyval.type) =  BOOLEAN; }
-#line 1453 "translate.tab.c"
+#line 1551 "translate.tab.c"
     break;
 
 
-#line 1457 "translate.tab.c"
+#line 1555 "translate.tab.c"
 
       default: break;
     }
