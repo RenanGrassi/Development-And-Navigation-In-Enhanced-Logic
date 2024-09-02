@@ -84,6 +84,8 @@ void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 void removeSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome);
 void jaExisteSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, int linha);
 int install_ids(TabelaDeSimbolos *tabelaDeSimbolos, Identificador identificador);
+
+char *tipoParaString(Type type);
 int install_id(char* name, Type type, Type value_type);
 
 Type semantica_relop(Type type1, Type type2, char op);

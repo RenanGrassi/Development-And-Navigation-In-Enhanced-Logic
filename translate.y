@@ -228,9 +228,24 @@ input_text: var
             |LE
             ;*/
 
-expr: expr OPERATION expr
-    | expr LOGIC_OPERATORS expr
-    | expr RELACIONAL_OPERATORS expr { printf("entrou"); }
+expr: expr OPERATION expr {
+    $$ = semantica_op($1, $3, $2[0]);
+    if ($$ == ERRO) {
+        yyerrorSemantic("Operação inválida entre tipos incompatíveis.");
+    }
+}
+    | expr LOGIC_OPERATORS expr {
+    $$ = semantica_logic($1, $3);
+    if ($$ == ERRO) {
+        yyerrorSemantic("Operação lógica inválida entre tipos incompatíveis.");
+    }
+}
+    | expr RELACIONAL_OPERATORS expr {
+    $$ = semantica_relop($1, $3, $2[0]);
+    if ($$ == ERRO) {
+        yyerrorSemantic("Operação relacional inválida entre tipos incompatíveis.");
+    }
+}
     | term { $$ = $1; }
     | call_function { $$ = $1; }
     | OPEN_PARENTHESES expr CLOSE_PARENTHESES { $$ = $2; }

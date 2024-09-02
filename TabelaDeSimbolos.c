@@ -134,14 +134,22 @@ Type semantica_relop(Type type1, Type type2, char op){
 }
 
 Type semantica_op(Type type1, Type type2, char op){
+    char vetor1[15];
+    vetor1[15]= tipoParaString(type1);
+    char vetor2[15] = tipoParaString(type2);
+    printf("Tipo 1 %s, tipo2 %s\n",vetor1,vetor2);;
+
     Type resultado = ERRO;
     if (type1 == INT && type2 == INT){
+        printf("int\n");
         resultado = INT;
     }
     if (type1 == FLOAT && type2 == FLOAT){
+        printf("float\n");
         resultado = FLOAT;
     }
     if (type1 == STRING && type2 == STRING && op == '+'){
+        printf("string\n");
         resultado = STRING;
     }
 
@@ -191,25 +199,48 @@ int install_id(char *name, Type type, Type value_type){
     return SUCESS0;
 }
 
+
+char *tipoParaString(Type type){
+    if (type == INT)
+    {
+        return "int";
+    }
+    else if (type == FLOAT)
+    {
+        return "float";
+    }
+    else if (type == CHAR)
+    {
+        return "char";
+    }
+    else if (type == BOOLEAN)
+    {
+        return "boonear";
+    }
+    else if (type == STRING)
+    {
+        return "string";
+    }
+}
 Type get_type(const char *str)
 {
     if (strcmp(str, "marioKart") == 0)
     {
         return INT;
     }
-    if (strcmp(str, "donkey") == 0)
+    else if (strcmp(str, "donkey") == 0)
     {
         return FLOAT;
     }
-    if (strcmp(str, "mario") == 0)
+    else if (strcmp(str, "mario") == 0)
     {
         return CHAR;
     }
-    if (strcmp(str, "zelda") == 0)
+    else if (strcmp(str, "zelda") == 0)
     {
         return BOOLEAN;
     }
-    if (strcmp(str, "superMario") == 0)
+    else if (strcmp(str, "superMario") == 0)
     {
         return STRING;
     }

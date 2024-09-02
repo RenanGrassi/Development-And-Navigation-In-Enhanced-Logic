@@ -592,8 +592,8 @@ static const yytype_int16 yyrline[] =
      128,   131,   134,   137,   140,   141,   144,   145,   148,   151,
      152,   155,   166,   169,   172,   175,   176,   177,   180,   182,
      185,   188,   189,   192,   193,   196,   197,   200,   201,   204,
-     205,   208,   211,   212,   231,   232,   233,   234,   235,   236,
-     239,   240,   241,   242,   245,   256,   257,   258
+     205,   208,   211,   212,   231,   237,   243,   249,   250,   251,
+     254,   255,   256,   257,   260,   271,   272,   273
 };
 #endif
 
@@ -1346,56 +1346,83 @@ yyreduce:
 #line 1347 "translate.tab.c"
     break;
 
+  case 64: /* expr: expr OPERATION expr  */
+#line 231 "translate.y"
+                          {
+    (yyval.type) = semantica_op((yyvsp[-2].type), (yyvsp[0].type), (yyvsp[-1].str)[0]);
+    if ((yyval.type) == ERRO) {
+        yyerrorSemantic("Operação inválida entre tipos incompatíveis.");
+    }
+}
+#line 1358 "translate.tab.c"
+    break;
+
+  case 65: /* expr: expr LOGIC_OPERATORS expr  */
+#line 237 "translate.y"
+                                {
+    (yyval.type) = semantica_logic((yyvsp[-2].type), (yyvsp[0].type));
+    if ((yyval.type) == ERRO) {
+        yyerrorSemantic("Operação lógica inválida entre tipos incompatíveis.");
+    }
+}
+#line 1369 "translate.tab.c"
+    break;
+
   case 66: /* expr: expr RELACIONAL_OPERATORS expr  */
-#line 233 "translate.y"
-                                     { printf("entrou"); }
-#line 1353 "translate.tab.c"
+#line 243 "translate.y"
+                                     {
+    (yyval.type) = semantica_relop((yyvsp[-2].type), (yyvsp[0].type), (yyvsp[-1].str)[0]);
+    if ((yyval.type) == ERRO) {
+        yyerrorSemantic("Operação relacional inválida entre tipos incompatíveis.");
+    }
+}
+#line 1380 "translate.tab.c"
     break;
 
   case 67: /* expr: term  */
-#line 234 "translate.y"
+#line 249 "translate.y"
            { (yyval.type) = (yyvsp[0].type); }
-#line 1359 "translate.tab.c"
+#line 1386 "translate.tab.c"
     break;
 
   case 68: /* expr: call_function  */
-#line 235 "translate.y"
+#line 250 "translate.y"
                     { (yyval.type) = (yyvsp[0].type); }
-#line 1365 "translate.tab.c"
+#line 1392 "translate.tab.c"
     break;
 
   case 69: /* expr: OPEN_PARENTHESES expr CLOSE_PARENTHESES  */
-#line 236 "translate.y"
+#line 251 "translate.y"
                                               { (yyval.type) = (yyvsp[-1].type); }
-#line 1371 "translate.tab.c"
+#line 1398 "translate.tab.c"
     break;
 
   case 70: /* term: DIGITS  */
-#line 239 "translate.y"
+#line 254 "translate.y"
              { (yyval.type) = INT; }
-#line 1377 "translate.tab.c"
+#line 1404 "translate.tab.c"
     break;
 
   case 71: /* term: var  */
-#line 240 "translate.y"
+#line 255 "translate.y"
           { (yyval.type) = (yyvsp[0].identifier).type; }
-#line 1383 "translate.tab.c"
+#line 1410 "translate.tab.c"
     break;
 
   case 72: /* term: literal  */
-#line 241 "translate.y"
+#line 256 "translate.y"
               { (yyval.type) = (yyvsp[0].type); }
-#line 1389 "translate.tab.c"
+#line 1416 "translate.tab.c"
     break;
 
   case 73: /* term: DECIMAL  */
-#line 242 "translate.y"
+#line 257 "translate.y"
               { (yyval.type) = FLOAT; }
-#line 1395 "translate.tab.c"
+#line 1422 "translate.tab.c"
     break;
 
   case 74: /* var: IDENTIFIER  */
-#line 245 "translate.y"
+#line 260 "translate.y"
                 {
     if (!buscaSimbolo(&tabelaDeSimbolos, (yyvsp[0].identifier).nome)) {
         char msg[100];
@@ -1404,29 +1431,29 @@ yyreduce:
     }
     (yyval.identifier) = (yyvsp[0].identifier);
 }
-#line 1408 "translate.tab.c"
+#line 1435 "translate.tab.c"
     break;
 
   case 75: /* literal: LITERAL_CHAR  */
-#line 256 "translate.y"
+#line 271 "translate.y"
                       { (yyval.type) = CHAR; }
-#line 1414 "translate.tab.c"
+#line 1441 "translate.tab.c"
     break;
 
   case 76: /* literal: LITERAL_STRING  */
-#line 257 "translate.y"
+#line 272 "translate.y"
                          { (yyval.type) = STRING; }
-#line 1420 "translate.tab.c"
+#line 1447 "translate.tab.c"
     break;
 
   case 77: /* literal: LITERAL_BOOL  */
-#line 258 "translate.y"
+#line 273 "translate.y"
                        { (yyval.type) =  BOOLEAN; }
-#line 1426 "translate.tab.c"
+#line 1453 "translate.tab.c"
     break;
 
 
-#line 1430 "translate.tab.c"
+#line 1457 "translate.tab.c"
 
       default: break;
     }
@@ -1619,7 +1646,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 261 "translate.y"
+#line 276 "translate.y"
 
 
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type) {

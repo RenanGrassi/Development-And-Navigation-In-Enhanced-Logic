@@ -1,9 +1,11 @@
 boatarde
 
 marioKart a;
-marioKart b;
+mario b;
 a = 1;
-b = 2;
+b = 'a';
+
+a = a + b;
 
 fezALista(a > b):{
     a = 3;
