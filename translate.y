@@ -15,6 +15,8 @@ int primeiro = 0;
 
 int funcaoOuMain; //0 funcao, 1 main
 
+int qntPassadas;
+
 Function funcaoYacc;
 Identificador *primeiroIdentificador;
 Identificador *ultimoIdentificador;
@@ -23,8 +25,9 @@ ListaIdentificadores listaIdentificadores;
 
 
 Function *funcaoVazia;
+Function funcaoAuxiliar;
 
-
+Identificador *identificadorAuxiliar;
 
 TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
 //void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
@@ -105,13 +108,19 @@ functions:function functions
          ;
 
 
-function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter parameters {
-                inicializaFuncao(&funcaoYacc, $2.nome, primeiroIdentificador, listaIdentificadores.qntParams, ultimoIdentificador, 1);
+function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter{  
                 
+            primeiroIdentificador = listaIdentificadores.primeiro; 
+            ultimoIdentificador = listaIdentificadores.ultimo; 
+            identificadorAuxiliar = primeiroIdentificador;
+
+            } parameters {
+                inicializaFuncao(&funcaoYacc, $2.nome, primeiroIdentificador, listaIdentificadores.qntParams, ultimoIdentificador, 1);
+                funcaoYacc.qntParams = listaIdentificadores.qntParams;
             }
             CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE {
                 addId($2.nome, funcao, nenhum, line_number + 1, FUNCTION, funcaoYacc);
-                clearIdentificadorList(primeiroIdentificador);  // Clean up memory after usage
+                //clearIdentificadorList(primeiroIdentificador);  // Clean up memory after usage
             }
         ;
 
@@ -121,9 +130,7 @@ parameters: COMMA parameter parameters
 
 parameter: type IDENTIFIER {
             if(primeiro == 1){
-                atualizaListaParametros(&listaIdentificadores, $1);  // Pass the list by reference
-                primeiroIdentificador = listaIdentificadores.primeiro;  // Set the pointer to the first identifier
-                ultimoIdentificador = listaIdentificadores.ultimo;  // Set the pointer to the last identifier
+                atualizaListaParametros(&listaIdentificadores, $1); // Set the pointer to the last identifier
                 primeiro = 0;  // Flag that the first parameter is now set
             } else {
                 atualizaListaParametros(&listaIdentificadores, $1); 
@@ -134,8 +141,7 @@ parameter: type IDENTIFIER {
          ;
 
 
-main: {printf("Entrou na main \n");
-        funcaoOuMain = 0;}INT_MAIN stmts 
+main: {funcaoOuMain = 0;}INT_MAIN stmts 
     ;
 
 stmts: stmt stmts { $$ = TYPE; }
@@ -170,11 +176,17 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING CLOSE_PARENTHESES SEMI
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
 
-call_function: FUNCTION_CALL IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION; 
-                //Verificar se o identificador existe 
-                //verificar a quantidade de parametros passada
-                //verificar os tipos de parametros passados passando pela lista encadeada
-                //Se algum der "miss" encerra e da erro
+call_function: FUNCTION_CALL IDENTIFIER {
+                if(!(buscaSimbolo(&tabelaDeSimbolos, $2.nome))){
+                    imprimeTabelaDeSimbolos(&tabelaDeSimbolos, listaIdentificadores); 
+                    char msg[100];
+                    sprintf(msg, "Chamada de função não declarada \"%s\" proximo a linha %d", $2.nome, line_number + 1);
+                    yyerrorSemantic(msg); 
+                }
+
+                } OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { 
+                $$ = FUNCTION; 
+                qntPassadas = 0;
        
                 }
              ;
@@ -187,7 +199,29 @@ real_parameters2: COMMA real_parameter real_parameters2 { $$ = $2; }
                 | { $$ = NONE; }
                 ;
 
-real_parameter: expr 
+real_parameter: expr { 
+    if(qntPassadas < funcaoYacc.qntParams){
+        if($1 == identificadorAuxiliar->type){
+            qntPassadas++;
+            if(!(identificadorAuxiliar->proximo)){
+                identificadorAuxiliar = identificadorAuxiliar->proximo;
+
+            }
+
+        }else{
+            char msg[100];
+            sprintf(msg, "Tipo incompativel. Tipo esperado: %s, tipo passado: %s ",
+                             getType(identificadorAuxiliar->type),getType($1));
+            yyerrorSemantic(msg);
+
+        }
+    }else{
+        char msg[100];
+        sprintf(msg, "Quantidade de parametros maior doque esperado.");
+        yyerrorSemantic(msg);
+    }
+
+}
                 ;
 
 return_stmt: RETURN expr SEMICOLON
@@ -211,7 +245,6 @@ assign_stmt: var ASSIGN expr SEMICOLON {
            ;
 
 declaration: type IDENTIFIER SEMICOLON { 
-    printf("Bateu aqui\n");
     funcaoVazia = (Function*) malloc(sizeof(Function));
     funcaoVazia->flag = 0;
     addId($2.nome, variavel, $1, line_number+1, $1, *funcaoVazia); }
@@ -331,6 +364,7 @@ literal: LITERAL_CHAR { $$ = CHAR; }
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type, Function funcaoTabela) {
     
     if (buscaSimbolo(&tabelaDeSimbolos, id)) {
+       imprimeTabelaDeSimbolos(&tabelaDeSimbolos, listaIdentificadores   ); 
         char msg[100];
         sprintf(msg, "Redeclaração do identificador \"%s\" na linha %d", id, linha);
         yyerrorSemantic(msg);
@@ -341,6 +375,8 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type
 
 
 int main(){
+    qntPassadas = 0;
+    identificadorAuxiliar = (Identificador *) malloc(sizeof(Identificador));
     inicializaTabelaDeSimbolos(&tabelaDeSimbolos);
     yyparse();
     return 0;

@@ -17,6 +17,7 @@ void inicializaFuncao(Function *funcao, char *nome, Identificador *primeiroIdent
     funcao->ultimoIdentificador = ultimoIdentificador;
     funcao->flag = flag;
     funcao->qntParams = qntParams;
+
 }
 
 void atualizaListaParametros(ListaIdentificadores* lista, Type tipo) {
@@ -112,7 +113,7 @@ void insereSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome, TipoDeDado ti
 Simbolo *buscaSimbolo(TabelaDeSimbolos *tabelaDeSimbolos, char *nome) {
     Simbolo *simbolo = tabelaDeSimbolos->primeiro;
     while (simbolo != NULL) {
-        if (get_type(simbolo->nome) == 0) {
+        if(strcmp(simbolo->nome, nome) == 0) {
             return simbolo;
         }
         simbolo = simbolo->proximo;
@@ -177,13 +178,13 @@ void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos, ListaIdentifica
     Simbolo *simbolo = tabelaDeSimbolos->primeiro;
 
     // Print the table header
-    printf("---------------------------------------------------------------------------------------\n");
-    printf("| %-20s | %-20s | %-6s | %-20s | %-20s \n", 
-           "Nome", "Tipo de dado", "Linha", "Tipo de simbolo", "Type do simbolo");
-    printf("---------------------------------------------------------------------------------------\n");
 
     // Iterate through the symbol list and print each entry
     while (simbolo != NULL) {
+        printf("---------------------------------------------------------------------------------------\n");
+        printf("| %-20s | %-20s | %-6s | %-20s | %-20s \n", 
+            "Nome", "Tipo de dado", "Linha", "Tipo de simbolo", "Type do simbolo");
+        printf("---------------------------------------------------------------------------------------\n");
         printf("| %-20s | %-20s | %-6d | %-20s | %-20s \n", 
                simbolo->nome, 
                getTipoDeDadoNome(simbolo->tipoDado), 
@@ -229,9 +230,10 @@ void printFunction(Function* func, ListaIdentificadores lista) {
     }
 
     // Print quantity of parameters from the list
-    printf("---------------------------------------------------------------------------------------\n");
-    printf("                       %-20s | %-20d \n", "Lista Total Params", lista.qntParams);
-    printf("---------------------------------------------------------------------------------------\n");
+    //printf("---------------------------------------------------------------------------------------\n");
+    printf("%-20s | %-20d \n", "Lista Total Params", lista.qntParams);
+    printf("\n\n");
+    //printf("---------------------------------------------------------------------------------------\n");
 }
 
 

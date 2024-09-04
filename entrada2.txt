@@ -1,13 +1,15 @@
-masNaoEObvio funcao(marioKart palavra){
+masNaoEObvio funcao(marioKart palavra, marioKart a){
     palavra = 2;
 }
 
 boatarde
 
 marioKart variavel;
-variavel = 1;
+marioKart numero;
+marioKart outroNum;
 
-masIssoEObvio funcao(variavel);;
+masIssoEObvio funcao(variavel,numero);;
+variavel = 1;
 
 veeeeja(variavel);
 

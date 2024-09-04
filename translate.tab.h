@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 37 "translate.y"
+#line 40 "translate.y"
 
     #include "TabelaDeSimbolos.h" 
 
@@ -107,7 +107,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 41 "translate.y"
+#line 44 "translate.y"
 
     char* str;
     int iValue;
