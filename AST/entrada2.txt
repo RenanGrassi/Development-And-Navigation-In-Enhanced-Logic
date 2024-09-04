@@ -1,0 +1,22 @@
+
+boatarde
+
+marioKart x;
+marioKart y;
+
+fezALista(x > y):{
+    veeeeja(x);
+}nao:{
+    veeeeja(x);
+}
+
+marioKart z;
+
+fezALista (z > 10):{
+    veeeeja(x );
+} naoFez (z == 10):{
+    veeeeja(z);
+} 
+
+chamada 0;
+
