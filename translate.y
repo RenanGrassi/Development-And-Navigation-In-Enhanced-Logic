@@ -11,11 +11,25 @@ extern int line_number;
 void executeProgram();
 extern void yyerrorSemantic(const char *s);
 
+int primeiro = 0;
+
+int funcaoOuMain; //0 funcao, 1 main
+
+Function funcaoYacc;
+Identificador *primeiroIdentificador;
+Identificador *ultimoIdentificador;
+
+ListaIdentificadores listaIdentificadores;
+
+
+Function *funcaoVazia;
+
+
 
 TabelaDeSimbolos tabelaDeSimbolos;  // Tabela de símbolos global
 //void imprimeTabelaDeSimbolos(TabelaDeSimbolos *tabelaDeSimbolos);
 
-void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type);
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type, Function funcaoTabela);
 
 
 %}
@@ -29,8 +43,7 @@ void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type
     int iValue;
     double real;
     char caractere;
-    Identificador identifier;
-    Identificadores identifiers;
+    Identifier identifier;
     Type type;
     RealParameters types;
     Function* funct;
@@ -78,28 +91,51 @@ type: TYPE { $$ = get_type($1); }
     ;
 
 program: /* empty */
-       | functions main { 
-       imprimeTabelaDeSimbolos(&tabelaDeSimbolos); 
+       {funcaoOuMain = 0;}
+       functions main { 
+       primeiroIdentificador = (Identificador*) malloc(sizeof(Identificador));
+       ultimoIdentificador = (Identificador*) malloc(sizeof(Identificador));
+       imprimeTabelaDeSimbolos(&tabelaDeSimbolos, listaIdentificadores   ); 
        executeProgram(); 
 }
        ;
 
-functions: function functions
+functions:function functions
          | 
          ;
 
-function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter parameters CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE 
+
+function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter parameters {
+                inicializaFuncao(&funcaoYacc, $2.nome, primeiroIdentificador, listaIdentificadores.qntParams, ultimoIdentificador, 1);
+                
+            }
+            CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE {
+                addId($2.nome, funcao, nenhum, line_number + 1, FUNCTION, funcaoYacc);
+                clearIdentificadorList(primeiroIdentificador);  // Clean up memory after usage
+            }
         ;
 
 parameters: COMMA parameter parameters
           | /*empty*/
           ;
 
-parameter: type IDENTIFIER { addId($2.nome, variavel, $1, line_number+1, $1); }
-         | /*empty*/
+parameter: type IDENTIFIER {
+            if(primeiro == 1){
+                atualizaListaParametros(&listaIdentificadores, $1);  // Pass the list by reference
+                primeiroIdentificador = listaIdentificadores.primeiro;  // Set the pointer to the first identifier
+                ultimoIdentificador = listaIdentificadores.ultimo;  // Set the pointer to the last identifier
+                primeiro = 0;  // Flag that the first parameter is now set
+            } else {
+                atualizaListaParametros(&listaIdentificadores, $1); 
+                // Insert subsequent parameters
+            }
+}
+         | /*empty*/{funcaoOuMain = 0;}
          ;
 
-main: INT_MAIN stmts
+
+main: {printf("Entrou na main \n");
+        funcaoOuMain = 0;}INT_MAIN stmts 
     ;
 
 stmts: stmt stmts { $$ = TYPE; }
@@ -134,7 +170,13 @@ file_open: type READ_FILE OPEN_PARENTHESES LITERAL_STRING CLOSE_PARENTHESES SEMI
 file_close: CLOSE_FILE OPEN_PARENTHESES IDENTIFIER CLOSE_PARENTHESES SEMICOLON
           ;
 
-call_function: FUNCTION_CALL IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION; }
+call_function: FUNCTION_CALL IDENTIFIER OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON { $$ = FUNCTION; 
+                //Verificar se o identificador existe 
+                //verificar a quantidade de parametros passada
+                //verificar os tipos de parametros passados passando pela lista encadeada
+                //Se algum der "miss" encerra e da erro
+       
+                }
              ;
 
 real_parameters: real_parameter real_parameters2 
@@ -153,17 +195,26 @@ return_stmt: RETURN expr SEMICOLON
            ;
 
 assign_stmt: var ASSIGN expr SEMICOLON {
-    Type varType = buscaSimbolo(&tabelaDeSimbolos, $1.nome)->type;
-    Type exprType = $3;
-    if (varType != exprType) {
-        char msg[100];
-        sprintf(msg, "Tipo incompatível na atribuição de %s", $1.nome);
-        yyerrorSemantic(msg);
+    Simbolo *simboloTeste;
+    simboloTeste = buscaSimbolo(&tabelaDeSimbolos, $1.nome);
+    if(simboloTeste){
+        Type varType = simboloTeste->type;
+        Type exprType = $3;
+        if (varType != exprType) {
+            char msg[100];
+            sprintf(msg, "Tipo incompatível na atribuição de %s", $1.nome);
+            yyerrorSemantic(msg);
+        }
     }
+    
 }
            ;
 
-declaration: type IDENTIFIER SEMICOLON { addId($2.nome, variavel, $1, line_number+1, $1); }
+declaration: type IDENTIFIER SEMICOLON { 
+    printf("Bateu aqui\n");
+    funcaoVazia = (Function*) malloc(sizeof(Function));
+    funcaoVazia->flag = 0;
+    addId($2.nome, variavel, $1, line_number+1, $1, *funcaoVazia); }
            ;
 
 code_block: BLOCK_OPEN stmts BLOCK_CLOSE
@@ -258,10 +309,12 @@ term: DIGITS { $$ = INT; }
     ;
 
 var: IDENTIFIER {
-    if (!buscaSimbolo(&tabelaDeSimbolos, $1.nome)) {
-        char msg[100];
-        sprintf(msg, "Variável \"%s\" não declarada", $1.nome);
-        yyerrorSemantic(msg);
+    if(funcaoOuMain == 1){
+        if (!buscaSimbolo(&tabelaDeSimbolos, $1.nome)) {
+            char msg[100];
+            sprintf(msg, "Variável \"%s\" não declarada", $1.nome);
+            yyerrorSemantic(msg);
+        }
     }
     $$ = $1;
 }
@@ -275,19 +328,20 @@ literal: LITERAL_CHAR { $$ = CHAR; }
 
 %%
 
-void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type) {
+void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type, Function funcaoTabela) {
+    
     if (buscaSimbolo(&tabelaDeSimbolos, id)) {
         char msg[100];
         sprintf(msg, "Redeclaração do identificador \"%s\" na linha %d", id, linha);
-        yyerror(msg);
+        yyerrorSemantic(msg);
         exit(1);
     }
-    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, linha, tipoSimbolo, type);
+    insereSimbolo(&tabelaDeSimbolos, id, tipoDado, linha, tipoSimbolo, type, funcaoTabela);
 }
+
 
 int main(){
     inicializaTabelaDeSimbolos(&tabelaDeSimbolos);
-    printf("\nTabela iniciada\n");
     yyparse();
     return 0;
 }

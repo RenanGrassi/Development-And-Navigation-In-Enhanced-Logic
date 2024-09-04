@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_TRANSLATE_TAB_H_INCLUDED
-# define YY_YY_TRANSLATE_TAB_H_INCLUDED
+#ifndef YY_YY_YACC_TAB_H_INCLUDED
+# define YY_YY_YACC_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,11 +45,11 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 37 "translate.y"
+#line 17 "yacc.y"
 
-    #include "TabelaDeSimbolos.h" 
+    #include "AST.h"
 
-#line 53 "translate.tab.h"
+#line 53 "yacc.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -74,31 +74,29 @@ extern int yydebug;
     PRINTLN = 269,                 /* PRINTLN  */
     WHILE = 270,                   /* WHILE  */
     INT_MAIN = 271,                /* INT_MAIN  */
-    READ_FILE = 272,               /* READ_FILE  */
-    CLOSE_FILE = 273,              /* CLOSE_FILE  */
-    OPEN_PARENTHESES = 274,        /* OPEN_PARENTHESES  */
-    CLOSE_PARENTHESES = 275,       /* CLOSE_PARENTHESES  */
-    OPEN_BRACKET = 276,            /* OPEN_BRACKET  */
-    CLOSE_BRACKET = 277,           /* CLOSE_BRACKET  */
-    COMMA = 278,                   /* COMMA  */
-    SEMICOLON = 279,               /* SEMICOLON  */
-    COLON = 280,                   /* COLON  */
-    FUNCTION_CALL = 281,           /* FUNCTION_CALL  */
-    BLOCK_CLOSE = 282,             /* BLOCK_CLOSE  */
-    BLOCK_OPEN = 283,              /* BLOCK_OPEN  */
-    ASSIGN = 284,                  /* ASSIGN  */
-    INPUT = 285,                   /* INPUT  */
-    LITERAL_STRING = 286,          /* LITERAL_STRING  */
-    LITERAL_BOOL = 287,            /* LITERAL_BOOL  */
-    LITERAL_CHAR = 288,            /* LITERAL_CHAR  */
-    IDENTIFIER = 289,              /* IDENTIFIER  */
-    DIGITS = 290,                  /* DIGITS  */
-    DECIMAL = 291,                 /* DECIMAL  */
-    FUNCT = 292,                   /* FUNCT  */
-    RELACIONAL_OPERATORS = 293,    /* RELACIONAL_OPERATORS  */
-    OPERATION = 294,               /* OPERATION  */
-    LOGIC_OPERATORS = 295,         /* LOGIC_OPERATORS  */
-    TYPE = 296                     /* TYPE  */
+    OPEN_PARENTHESES = 272,        /* OPEN_PARENTHESES  */
+    CLOSE_PARENTHESES = 273,       /* CLOSE_PARENTHESES  */
+    OPEN_BRACKET = 274,            /* OPEN_BRACKET  */
+    CLOSE_BRACKET = 275,           /* CLOSE_BRACKET  */
+    COMMA = 276,                   /* COMMA  */
+    SEMICOLON = 277,               /* SEMICOLON  */
+    COLON = 278,                   /* COLON  */
+    FUNCTION_CALL = 279,           /* FUNCTION_CALL  */
+    BLOCK_CLOSE = 280,             /* BLOCK_CLOSE  */
+    BLOCK_OPEN = 281,              /* BLOCK_OPEN  */
+    ASSIGN = 282,                  /* ASSIGN  */
+    INPUT = 283,                   /* INPUT  */
+    LITERAL_STRING = 284,          /* LITERAL_STRING  */
+    LITERAL_BOOL = 285,            /* LITERAL_BOOL  */
+    LITERAL_CHAR = 286,            /* LITERAL_CHAR  */
+    IDENTIFIER = 287,              /* IDENTIFIER  */
+    DIGITS = 288,                  /* DIGITS  */
+    DECIMAL = 289,                 /* DECIMAL  */
+    FUNCT = 290,                   /* FUNCT  */
+    RELACIONAL_OPERATORS = 291,    /* RELACIONAL_OPERATORS  */
+    OPERATION = 292,               /* OPERATION  */
+    LOGIC_OPERATORS = 293,         /* LOGIC_OPERATORS  */
+    TYPE = 294                     /* TYPE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -107,18 +105,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 41 "translate.y"
+#line 21 "yacc.y"
 
     char* str;
     int iValue;
     double real;
     char caractere;
-    Identifier identifier;
-    Type type;
-    RealParameters types;
-    Function* funct;
+    ASTNode *node;
 
-#line 122 "translate.tab.h"
+#line 117 "yacc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -133,4 +128,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_TRANSLATE_TAB_H_INCLUDED  */
+#endif /* !YY_YY_YACC_TAB_H_INCLUDED  */

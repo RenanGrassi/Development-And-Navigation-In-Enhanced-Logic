@@ -1,5 +1,6 @@
 masNaoEObvio funcao(marioKart palavra){
     palavra = 2;
+    palavra = 3;
 }
 
 boatarde
@@ -12,3 +13,4 @@ masIssoEObvio funcao(variavel);;
 veeeeja(variavel);
 
 chamada 'variavel';
+
