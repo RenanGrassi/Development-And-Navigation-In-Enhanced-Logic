@@ -298,10 +298,6 @@ Type semantica_ternary(Type type1, Type type2){
 int install_ids(TabelaDeSimbolos *tabelaDeSimbolos, Identificador identificador){
     Simbolo *simbolo = (Simbolo *) malloc(sizeof(Simbolo));
     simbolo = buscaSimbolo(tabelaDeSimbolos,identificador.nome);
-    //aqui vai ter que testar as outras 3 possibilidades tb:
-    //int status = install_id(simbolo->nome, identificador.type, simbolo->tipoSimbolo);
-    //int status = install_id(simbolo->nome, simbolo->tipoSimbolo, identificador.type);
-    //int status = install_id(simbolo->nome, simbolo->tipoDado, identificador.type);
     int status = install_id(simbolo->nome, identificador.type, simbolo->tipoDado);
     if (status != SUCESS0){
         return status;

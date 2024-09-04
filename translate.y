@@ -120,7 +120,6 @@ function: FUNCT IDENTIFIER OPEN_PARENTHESES parameter{
             }
             CLOSE_PARENTHESES BLOCK_OPEN stmts BLOCK_CLOSE {
                 addId($2.nome, funcao, nenhum, line_number + 1, FUNCTION, funcaoYacc);
-                //clearIdentificadorList(primeiroIdentificador);  // Clean up memory after usage
             }
         ;
 
@@ -129,14 +128,9 @@ parameters: COMMA parameter parameters
           ;
 
 parameter: type IDENTIFIER {
-            if(primeiro == 1){
-                atualizaListaParametros(&listaIdentificadores, $1); // Set the pointer to the last identifier
-                primeiro = 0;  // Flag that the first parameter is now set
-            } else {
                 atualizaListaParametros(&listaIdentificadores, $1); 
-                // Insert subsequent parameters
             }
-}
+
          | /*empty*/{funcaoOuMain = 0;}
          ;
 

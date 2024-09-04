@@ -609,14 +609,14 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int16 yyrline[] =
 {
        0,    93,    93,    97,    97,   106,   107,   111,   117,   111,
-     127,   128,   131,   140,   144,   144,   147,   148,   151,   152,
-     153,   154,   155,   158,   159,   160,   161,   162,   163,   164,
-     165,   166,   169,   170,   173,   176,   179,   179,   194,   195,
-     198,   199,   202,   227,   228,   231,   247,   253,   256,   259,
-     260,   261,   264,   266,   269,   272,   273,   276,   277,   280,
-     281,   284,   285,   288,   289,   292,   295,   296,   315,   321,
-     327,   333,   334,   335,   338,   339,   340,   341,   344,   357,
-     358,   359
+     127,   128,   131,   135,   139,   139,   142,   143,   146,   147,
+     148,   149,   150,   153,   154,   155,   156,   157,   158,   159,
+     160,   161,   164,   165,   168,   171,   174,   174,   189,   190,
+     193,   194,   197,   222,   223,   226,   242,   248,   251,   254,
+     255,   256,   259,   261,   264,   267,   268,   271,   272,   275,
+     276,   279,   280,   283,   284,   287,   290,   291,   310,   316,
+     322,   328,   329,   330,   333,   334,   335,   336,   339,   352,
+     353,   354
 };
 #endif
 
@@ -1355,43 +1355,37 @@ yyreduce:
   case 12: /* parameter: type IDENTIFIER  */
 #line 131 "translate.y"
                            {
-            if(primeiro == 1){
-                atualizaListaParametros(&listaIdentificadores, (yyvsp[-1].type)); // Set the pointer to the last identifier
-                primeiro = 0;  // Flag that the first parameter is now set
-            } else {
                 atualizaListaParametros(&listaIdentificadores, (yyvsp[-1].type)); 
-                // Insert subsequent parameters
             }
-}
-#line 1367 "translate.tab.c"
+#line 1361 "translate.tab.c"
     break;
 
   case 13: /* parameter: %empty  */
-#line 140 "translate.y"
+#line 135 "translate.y"
                     {funcaoOuMain = 0;}
-#line 1373 "translate.tab.c"
+#line 1367 "translate.tab.c"
     break;
 
   case 14: /* $@4: %empty  */
-#line 144 "translate.y"
+#line 139 "translate.y"
       {funcaoOuMain = 0;}
-#line 1379 "translate.tab.c"
+#line 1373 "translate.tab.c"
     break;
 
   case 16: /* stmts: stmt stmts  */
-#line 147 "translate.y"
+#line 142 "translate.y"
                   { (yyval.type) = TYPE; }
-#line 1385 "translate.tab.c"
+#line 1379 "translate.tab.c"
     break;
 
   case 17: /* stmts: %empty  */
-#line 148 "translate.y"
+#line 143 "translate.y"
                    { (yyval.type) = NONE; }
-#line 1391 "translate.tab.c"
+#line 1385 "translate.tab.c"
     break;
 
   case 36: /* $@5: %empty  */
-#line 179 "translate.y"
+#line 174 "translate.y"
                                         {
                 if(!(buscaSimbolo(&tabelaDeSimbolos, (yyvsp[0].identifier).nome))){
                     imprimeTabelaDeSimbolos(&tabelaDeSimbolos, listaIdentificadores); 
@@ -1401,39 +1395,39 @@ yyreduce:
                 }
 
                 }
-#line 1405 "translate.tab.c"
+#line 1399 "translate.tab.c"
     break;
 
   case 37: /* call_function: FUNCTION_CALL IDENTIFIER $@5 OPEN_PARENTHESES real_parameters CLOSE_PARENTHESES SEMICOLON  */
-#line 187 "translate.y"
+#line 182 "translate.y"
                                                                                { 
                 (yyval.type) = FUNCTION; 
                 qntPassadas = 0;
        
                 }
-#line 1415 "translate.tab.c"
+#line 1409 "translate.tab.c"
     break;
 
   case 39: /* real_parameters: %empty  */
-#line 195 "translate.y"
+#line 190 "translate.y"
                  { (yyval.type) = NONE; }
-#line 1421 "translate.tab.c"
+#line 1415 "translate.tab.c"
     break;
 
   case 40: /* real_parameters2: COMMA real_parameter real_parameters2  */
-#line 198 "translate.y"
+#line 193 "translate.y"
                                                         { (yyval.type) = (yyvsp[-1].type); }
-#line 1427 "translate.tab.c"
+#line 1421 "translate.tab.c"
     break;
 
   case 41: /* real_parameters2: %empty  */
-#line 199 "translate.y"
+#line 194 "translate.y"
                   { (yyval.type) = NONE; }
-#line 1433 "translate.tab.c"
+#line 1427 "translate.tab.c"
     break;
 
   case 42: /* real_parameter: expr  */
-#line 202 "translate.y"
+#line 197 "translate.y"
                      { 
     if(qntPassadas < funcaoYacc.qntParams){
         if((yyvsp[0].type) == identificadorAuxiliar->type){
@@ -1457,11 +1451,11 @@ yyreduce:
     }
 
 }
-#line 1461 "translate.tab.c"
+#line 1455 "translate.tab.c"
     break;
 
   case 45: /* assign_stmt: var ASSIGN expr SEMICOLON  */
-#line 231 "translate.y"
+#line 226 "translate.y"
                                        {
     Simbolo *simboloTeste;
     simboloTeste = buscaSimbolo(&tabelaDeSimbolos, (yyvsp[-3].identifier).nome);
@@ -1476,95 +1470,95 @@ yyreduce:
     }
     
 }
-#line 1480 "translate.tab.c"
+#line 1474 "translate.tab.c"
     break;
 
   case 46: /* declaration: type IDENTIFIER SEMICOLON  */
-#line 247 "translate.y"
+#line 242 "translate.y"
                                        { 
     funcaoVazia = (Function*) malloc(sizeof(Function));
     funcaoVazia->flag = 0;
     addId((yyvsp[-1].identifier).nome, variavel, (yyvsp[-2].type), line_number+1, (yyvsp[-2].type), *funcaoVazia); }
-#line 1489 "translate.tab.c"
+#line 1483 "translate.tab.c"
     break;
 
   case 68: /* expr: expr OPERATION expr  */
-#line 315 "translate.y"
+#line 310 "translate.y"
                           {
     (yyval.type) = semantica_op((yyvsp[-2].type), (yyvsp[0].type), (yyvsp[-1].str)[0]);
     if ((yyval.type) == ERRO) {
         yyerrorSemantic("Operação inválida entre tipos incompatíveis.");
     }
 }
-#line 1500 "translate.tab.c"
+#line 1494 "translate.tab.c"
     break;
 
   case 69: /* expr: expr LOGIC_OPERATORS expr  */
-#line 321 "translate.y"
+#line 316 "translate.y"
                                 {
     (yyval.type) = semantica_logic((yyvsp[-2].type), (yyvsp[0].type));
     if ((yyval.type) == ERRO) {
         yyerrorSemantic("Operação lógica inválida entre tipos incompatíveis.");
     }
 }
-#line 1511 "translate.tab.c"
+#line 1505 "translate.tab.c"
     break;
 
   case 70: /* expr: expr RELACIONAL_OPERATORS expr  */
-#line 327 "translate.y"
+#line 322 "translate.y"
                                      {
     (yyval.type) = semantica_relop((yyvsp[-2].type), (yyvsp[0].type), (yyvsp[-1].str)[0]);
     if ((yyval.type) == ERRO) {
         yyerrorSemantic("Operação relacional inválida entre tipos incompatíveis.");
     }
 }
-#line 1522 "translate.tab.c"
+#line 1516 "translate.tab.c"
     break;
 
   case 71: /* expr: term  */
-#line 333 "translate.y"
+#line 328 "translate.y"
            { (yyval.type) = (yyvsp[0].type); }
-#line 1528 "translate.tab.c"
+#line 1522 "translate.tab.c"
     break;
 
   case 72: /* expr: call_function  */
-#line 334 "translate.y"
+#line 329 "translate.y"
                     { (yyval.type) = (yyvsp[0].type); }
-#line 1534 "translate.tab.c"
+#line 1528 "translate.tab.c"
     break;
 
   case 73: /* expr: OPEN_PARENTHESES expr CLOSE_PARENTHESES  */
-#line 335 "translate.y"
+#line 330 "translate.y"
                                               { (yyval.type) = (yyvsp[-1].type); }
-#line 1540 "translate.tab.c"
+#line 1534 "translate.tab.c"
     break;
 
   case 74: /* term: DIGITS  */
-#line 338 "translate.y"
+#line 333 "translate.y"
              { (yyval.type) = INT; }
-#line 1546 "translate.tab.c"
+#line 1540 "translate.tab.c"
     break;
 
   case 75: /* term: var  */
-#line 339 "translate.y"
+#line 334 "translate.y"
           { (yyval.type) = (yyvsp[0].identifier).type; }
-#line 1552 "translate.tab.c"
+#line 1546 "translate.tab.c"
     break;
 
   case 76: /* term: literal  */
-#line 340 "translate.y"
+#line 335 "translate.y"
               { (yyval.type) = (yyvsp[0].type); }
-#line 1558 "translate.tab.c"
+#line 1552 "translate.tab.c"
     break;
 
   case 77: /* term: DECIMAL  */
-#line 341 "translate.y"
+#line 336 "translate.y"
               { (yyval.type) = FLOAT; }
-#line 1564 "translate.tab.c"
+#line 1558 "translate.tab.c"
     break;
 
   case 78: /* var: IDENTIFIER  */
-#line 344 "translate.y"
+#line 339 "translate.y"
                 {
     if(funcaoOuMain == 1){
         if (!buscaSimbolo(&tabelaDeSimbolos, (yyvsp[0].identifier).nome)) {
@@ -1575,29 +1569,29 @@ yyreduce:
     }
     (yyval.identifier) = (yyvsp[0].identifier);
 }
-#line 1579 "translate.tab.c"
+#line 1573 "translate.tab.c"
     break;
 
   case 79: /* literal: LITERAL_CHAR  */
-#line 357 "translate.y"
+#line 352 "translate.y"
                       { (yyval.type) = CHAR; }
-#line 1585 "translate.tab.c"
+#line 1579 "translate.tab.c"
     break;
 
   case 80: /* literal: LITERAL_STRING  */
-#line 358 "translate.y"
+#line 353 "translate.y"
                          { (yyval.type) = STRING; }
-#line 1591 "translate.tab.c"
+#line 1585 "translate.tab.c"
     break;
 
   case 81: /* literal: LITERAL_BOOL  */
-#line 359 "translate.y"
+#line 354 "translate.y"
                        { (yyval.type) =  BOOLEAN; }
-#line 1597 "translate.tab.c"
+#line 1591 "translate.tab.c"
     break;
 
 
-#line 1601 "translate.tab.c"
+#line 1595 "translate.tab.c"
 
       default: break;
     }
@@ -1790,7 +1784,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 362 "translate.y"
+#line 357 "translate.y"
 
 
 void addId(char *id, Tipo tipoSimbolo, TipoDeDado tipoDado, int linha, Type type, Function funcaoTabela) {
